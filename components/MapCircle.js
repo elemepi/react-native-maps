@@ -5,6 +5,7 @@ import {
 import decorateMapComponent, {
   USES_DEFAULT_IMPLEMENTATION,
   SUPPORTED,
+  NOT_SUPPORTED,
 } from './decorateMapComponent';
 
 const propTypes = {
@@ -146,6 +147,10 @@ module.exports = decorateMapComponent(MapCircle, {
     google: {
       ios: SUPPORTED,
       android: USES_DEFAULT_IMPLEMENTATION,
+    },
+    gaode: {
+      ios: NOT_SUPPORTED,
+      android: SUPPORTED,
     },
   },
 });

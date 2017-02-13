@@ -40,6 +40,14 @@ public class MapsPackage implements ReactPackage {
         AirMapLiteManager mapLiteManager = new AirMapLiteManager(reactContext);
         AirMapUrlTileManager tileManager = new AirMapUrlTileManager(reactContext);
 
+        GaodeMapCalloutManager gaodeCalloutManager = new GaodeMapCalloutManager();
+        GaodeMapMarkerManager gaodeAnnotationManager = new GaodeMapMarkerManager();
+        GaodeMapPolylineManager gaodePolylineManager = new GaodeMapPolylineManager(reactContext);
+        GaodeMapPolygonManager gaodePolygonManager = new GaodeMapPolygonManager(reactContext);
+        GaodeMapCircleManager gaodeCircleManager = new GaodeMapCircleManager(reactContext);
+        GaodeMapManager gaodeMapManager = new GaodeMapManager(reactContext);
+        GaodeMapUrlTileManager gaodeTileManager = new GaodeMapUrlTileManager(reactContext);
+
         return Arrays.<ViewManager>asList(
                 calloutManager,
                 annotationManager,
@@ -47,7 +55,17 @@ public class MapsPackage implements ReactPackage {
                 polygonManager,
                 circleManager,
                 mapManager,
+                gaodeMapManager,
                 mapLiteManager,
-                tileManager);
+                tileManager,
+
+                gaodeCalloutManager,
+                gaodeAnnotationManager,
+                gaodePolylineManager,
+                gaodePolygonManager,
+                gaodeCircleManager,
+                gaodeMapManager,
+                gaodeTileManager
+                );
     }
 }

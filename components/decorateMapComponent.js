@@ -7,6 +7,7 @@ import {
 import {
   PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
+  PROVIDER_GAODE,
 } from './ProviderConstants';
 
 export const SUPPORTED = 'SUPPORTED';
@@ -14,6 +15,7 @@ export const USES_DEFAULT_IMPLEMENTATION = 'USES_DEFAULT_IMPLEMENTATION';
 export const NOT_SUPPORTED = 'NOT_SUPPORTED';
 
 export function getAirMapName(provider) {
+  if (provider === PROVIDER_GAODE) return 'AIRGaodeMap';
   if (Platform.OS === 'android') return 'AIRMap';
   if (provider === PROVIDER_GOOGLE) return 'AIRGoogleMap';
   return 'AIRMap';

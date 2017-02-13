@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 import decorateMapComponent, {
   SUPPORTED,
+  NOT_SUPPORTED,
   USES_DEFAULT_IMPLEMENTATION,
 } from './decorateMapComponent';
 
@@ -40,6 +41,10 @@ module.exports = decorateMapComponent(MapCallout, {
     google: {
       ios: SUPPORTED,
       android: USES_DEFAULT_IMPLEMENTATION,
+    },
+    gaode: {
+      ios: NOT_SUPPORTED,
+      android: SUPPORTED,
     },
   },
 });

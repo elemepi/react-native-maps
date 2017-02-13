@@ -8,7 +8,7 @@ import {
   Text,
   Switch,
 } from 'react-native';
-import { PROVIDER_GOOGLE, PROVIDER_DEFAULT } from 'react-native-maps';
+import { PROVIDER_GOOGLE, PROVIDER_GAODE, PROVIDER_DEFAULT } from 'react-native-maps';
 import DisplayLatLng from './examples/DisplayLatLng';
 import ViewsAsMarkers from './examples/ViewsAsMarkers';
 import EventListener from './examples/EventListener';
@@ -55,7 +55,7 @@ class App extends React.Component {
 
     this.state = {
       Component: null,
-      useGoogleMaps: ANDROID,
+      provider: PROVIDER_DEFAULT,
     };
   }
 
@@ -87,9 +87,25 @@ class App extends React.Component {
       <View>
         <Text>Use GoogleMaps?</Text>
         <Switch
-          onValueChange={(value) => this.setState({ useGoogleMaps: value })}
+          onValueChange={(value) => this.setState({
+            provider: value ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+          })}
           style={{ marginBottom: 10 }}
-          value={this.state.useGoogleMaps}
+          value={this.state.provider === PROVIDER_GOOGLE}
+        />
+      </View>
+    );
+  }
+  renderGaodeSwitch() {
+    return (
+      <View>
+        <Text>Use Gaode Map?</Text>
+        <Switch
+          onValueChange={(value) => this.setState({
+            provider: value ? PROVIDER_GAODE : PROVIDER_DEFAULT
+          })}
+          style={{ marginBottom: 10 }}
+          value={this.state.provider === PROVIDER_GAODE}
         />
       </View>
     );
@@ -98,12 +114,12 @@ class App extends React.Component {
   renderExamples(examples) {
     const {
       Component,
-      useGoogleMaps,
+      provider,
     } = this.state;
 
     return (
       <View style={styles.container}>
-        {Component && <Component provider={useGoogleMaps ? PROVIDER_GOOGLE : PROVIDER_DEFAULT} />}
+        {Component && <Component provider={provider} />}
         {Component && this.renderBackButton()}
         {!Component &&
           <ScrollView
@@ -112,6 +128,7 @@ class App extends React.Component {
             showsVerticalScrollIndicator={false}
           >
             {IOS && this.renderGoogleSwitch()}
+            {ANDROID && this.renderGaodeSwitch()}
             {examples.map(example => this.renderExample(example))}
           </ScrollView>
         }
