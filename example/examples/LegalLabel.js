@@ -47,8 +47,8 @@ class LegalLabel extends React.Component {
 
   render() {
     const latlng = {
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude: 31.23295,
+      longitude: 121.3822,
     };
 
     const ASPECT_RATIO = screen.width / screen.height;

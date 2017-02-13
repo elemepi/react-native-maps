@@ -172,8 +172,8 @@ You have to link dependencies with rnpm and re-run the build:
            <MapView
              style={styles.map}
              region={{
-               latitude: 37.78825,
-               longitude: -122.4324,
+               latitude: 31.23295,
+               longitude: 121.3822,
                latitudeDelta: 0.015,
                longitudeDelta: 0.0121,
              }}

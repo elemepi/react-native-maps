@@ -88,7 +88,7 @@ class App extends React.Component {
         <Text>Use GoogleMaps?</Text>
         <Switch
           onValueChange={(value) => this.setState({
-            provider: value ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
+            provider: value ? PROVIDER_GOOGLE : PROVIDER_DEFAULT,
           })}
           style={{ marginBottom: 10 }}
           value={this.state.provider === PROVIDER_GOOGLE}
@@ -102,7 +102,7 @@ class App extends React.Component {
         <Text>Use Gaode Map?</Text>
         <Switch
           onValueChange={(value) => this.setState({
-            provider: value ? PROVIDER_GAODE : PROVIDER_DEFAULT
+            provider: value ? PROVIDER_GAODE : PROVIDER_DEFAULT,
           })}
           style={{ marginBottom: 10 }}
           value={this.state.provider === PROVIDER_GAODE}
@@ -167,8 +167,8 @@ class App extends React.Component {
       [CustomOverlay, 'Custom Overlay Component', true],
     ]
     // Filter out examples that are not yet supported for Google Maps on iOS.
-    .filter(example => ANDROID || (IOS && (example[2] || !this.state.useGoogleMaps)))
-    .map(makeExampleMapper(IOS && this.state.useGoogleMaps))
+    .filter(example => ANDROID || (IOS && (example[2] || this.state.provider !== PROVIDER_GOOGLE)))
+    .map(makeExampleMapper(IOS && this.state.provider === PROVIDER_GOOGLE))
     );
   }
 }

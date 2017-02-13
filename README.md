@@ -57,8 +57,8 @@ declaratively controlling features on the map.
 ```jsx
   <MapView
     initialRegion={{
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude: 31.23295,
+      longitude: 121.3822,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     }}
@@ -71,8 +71,8 @@ declaratively controlling features on the map.
 getInitialState() {
   return {
     region: {
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude: 31.23295,
+      longitude: 121.3822,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
