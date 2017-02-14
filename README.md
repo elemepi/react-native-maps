@@ -1,12 +1,22 @@
 # react-native-maps
 
-Forked from https://github.com/airbnb/react-native-maps, with support of gaode map.
+Forked from https://github.com/airbnb/react-native-maps, with support of AMap (gaode.com).
+
+Since Google is unavailable in China, I created this fork to use AMap on Android.
 
 Some API are currently not supported:
  
  * On load callback.
  * Fit to coordinate with padding.
  * Callout anchor.
+
+You should also add your apikey to AndroidManifest.xml:
+   
+   ```
+   <meta-data
+     android:name="com.amap.api.v2.apikey"
+     android:value="..."/>
+   ```
 
 ================ ORIGINAL README ================
 
