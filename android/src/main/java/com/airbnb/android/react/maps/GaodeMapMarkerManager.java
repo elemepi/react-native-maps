@@ -77,14 +77,14 @@ public class GaodeMapMarkerManager extends ViewGroupManager<GaodeMapMarker> {
         view.setAnchor(x, y);
     }
 
-    // TODO
-    @ReactProp(name = "calloutAnchor")
-    public void setCalloutAnchor(GaodeMapMarker view, ReadableMap map) {
-        // should default to (0.5, 0) (top middle)
-        double x = map != null && map.hasKey("x") ? map.getDouble("x") : 0.5;
-        double y = map != null && map.hasKey("y") ? map.getDouble("y") : 0.0;
-        view.setCalloutAnchor(x, y);
-    }
+    // Gaode does not support this property
+//    @ReactProp(name = "calloutAnchor")
+//    public void setCalloutAnchor(GaodeMapMarker view, ReadableMap map) {
+//        // should default to (0.5, 0) (top middle)
+//        double x = map != null && map.hasKey("x") ? map.getDouble("x") : 0.5;
+//        double y = map != null && map.hasKey("y") ? map.getDouble("y") : 0.0;
+//        view.setCalloutAnchor(x, y);
+//    }
 
     @ReactProp(name = "image")
     public void setImage(GaodeMapMarker view, @Nullable String source) {

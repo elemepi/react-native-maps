@@ -64,10 +64,6 @@ public class GaodeMapMarker extends GaodeMapFeature {
     private int zIndex = 0;
     private float opacity = 1.0f;
 
-    private boolean calloutAnchorIsSet;
-    private float calloutAnchorX;
-    private float calloutAnchorY;
-
     private boolean hasCustomMarkerView = false;
 
     private final DraweeHolder<?> logoHolder;
@@ -204,12 +200,6 @@ public class GaodeMapMarker extends GaodeMapFeature {
         update();
     }
 
-    public void setCalloutAnchor(double x, double y) {
-        calloutAnchorIsSet = true;
-        calloutAnchorX = (float) x;
-        calloutAnchorY = (float) y;
-    }
-
     public void setImage(String uri) {
         if (uri == null) {
             iconBitmapDescriptor = null;
@@ -245,7 +235,7 @@ public class GaodeMapMarker extends GaodeMapFeature {
     public void addView(View child, int index) {
         super.addView(child, index);
         // if children are added, it means we are rendering a custom marker
-        if (!(child instanceof AirMapCallout)) {
+        if (!(child instanceof GaodeMapCallout)) {
             hasCustomMarkerView = true;
         }
         update();
@@ -374,31 +364,17 @@ public class GaodeMapMarker extends GaodeMapFeature {
     }
 
     private void wrapCalloutView() {
-        // some hackery is needed to get the arbitrary infowindow view to render centered, and
-        // with only the width/height that it needs.
         if (this.calloutView == null || this.calloutView.getChildCount() == 0) {
             return;
         }
 
         LinearLayout LL = new LinearLayout(context);
         LL.setOrientation(LinearLayout.VERTICAL);
-        LL.setLayoutParams(new LinearLayout.LayoutParams(
+        LL.addView(this.calloutView);
+        this.calloutView.setLayoutParams(new LinearLayout.LayoutParams(
                 this.calloutView.width,
-                this.calloutView.height,
-                0f
+                this.calloutView.height
         ));
-
-
-        LinearLayout LL2 = new LinearLayout(context);
-        LL2.setOrientation(LinearLayout.HORIZONTAL);
-        LL2.setLayoutParams(new LinearLayout.LayoutParams(
-                this.calloutView.width,
-                this.calloutView.height,
-                0f
-        ));
-
-        LL.addView(LL2);
-        LL2.addView(this.calloutView);
 
         this.wrappedCalloutView = LL;
     }
