@@ -53,7 +53,7 @@ const propTypes = {
    */
   provider: PropTypes.oneOf([
     'google',
-    'gaode',
+    'amap',
   ]),
 
   /**
@@ -642,12 +642,12 @@ const nativeComponent = Component => requireNativeComponent(Component, MapView, 
     handlePanDrag: true,
   },
 });
-const airMaps = {
-  default: nativeComponent('AIRMap'),
-};
+const airMaps = {};
 if (Platform.OS === 'android') {
-  airMaps.google = airMaps.default;
-  airMaps.gaode = nativeComponent('AIRGaodeMap');
+  airMaps.default = googleMapIsInstalled ?
+    nativeComponent('AIRGoogleMap') : nativeComponent('AIRAMap');
+  airMaps.google = nativeComponent('AIRGoogleMap');
+  airMaps.amap = nativeComponent('AIRAMap');
 } else {
   airMaps.google = googleMapIsInstalled ? nativeComponent('AIRGoogleMap') :
     createNotSupportedComponent('react-native-maps: AirGoogleMaps dir must be added to your xCode project to support GoogleMaps on iOS.'); // eslint-disable-line max-len

@@ -8,7 +8,7 @@ import {
   Text,
   Switch,
 } from 'react-native';
-import { PROVIDER_GOOGLE, PROVIDER_GAODE, PROVIDER_DEFAULT } from 'react-native-maps';
+import { PROVIDER_GOOGLE, PROVIDER_AMAP, PROVIDER_DEFAULT } from 'react-native-maps';
 import DisplayLatLng from './examples/DisplayLatLng';
 import ViewsAsMarkers from './examples/ViewsAsMarkers';
 import EventListener from './examples/EventListener';
@@ -102,10 +102,10 @@ class App extends React.Component {
         <Text>Use Gaode Map?</Text>
         <Switch
           onValueChange={(value) => this.setState({
-            provider: value ? PROVIDER_GAODE : PROVIDER_DEFAULT,
+            provider: value ? PROVIDER_AMAP : PROVIDER_DEFAULT,
           })}
           style={{ marginBottom: 10 }}
-          value={this.state.provider === PROVIDER_GAODE}
+          value={this.state.provider === PROVIDER_AMAP}
         />
       </View>
     );

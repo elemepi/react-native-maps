@@ -42,7 +42,7 @@ module.exports = decorateMapComponent(MapCallout, {
       ios: SUPPORTED,
       android: USES_DEFAULT_IMPLEMENTATION,
     },
-    gaode: {
+    amap: {
       ios: NOT_SUPPORTED,
       android: SUPPORTED,
     },

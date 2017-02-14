@@ -293,7 +293,7 @@ module.exports = decorateMapComponent(MapMarker, {
       ios: SUPPORTED,
       android: USES_DEFAULT_IMPLEMENTATION,
     },
-    gaode: {
+    amap: {
       ios: NOT_SUPPORTED,
       android: SUPPORTED,
     },

@@ -2,7 +2,9 @@ package com.airbnb.android.react.maps.example;
 
 import android.app.Application;
 
-import com.airbnb.android.react.maps.MapsPackage;
+import com.airbnb.android.react.maps.amap.AirAMapPackage;
+import com.airbnb.android.react.maps.common.AirMapsPackage;
+import com.airbnb.android.react.maps.googlemap.AirGoogleMapsPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -19,8 +21,10 @@ public class ExampleApplication extends Application implements ReactApplication 
 
     @Override protected List<ReactPackage> getPackages() {
       return Arrays.asList(
-          new MainReactPackage(),
-          new MapsPackage());
+              new MainReactPackage(),
+              new AirMapsPackage(),
+              new AirGoogleMapsPackage(),
+              new AirAMapPackage());
     }
   };
 

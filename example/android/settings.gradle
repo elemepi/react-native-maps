@@ -1,2 +1,5 @@
-include ':app', ':react-native-maps'
+include ':app', ':react-native-maps', ':amap', ':googlemap', ':common'
 project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../../android')
+project(':amap').projectDir = new File(rootProject.projectDir, '../../android/amap')
+project(':googlemap').projectDir = new File(rootProject.projectDir, '../../android/googlemap')
+project(':common').projectDir = new File(rootProject.projectDir, '../../android/common')
