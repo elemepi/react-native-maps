@@ -170,15 +170,6 @@ public class GaodeMapView extends MapView implements AMap.InfoWindowAdapter, AMa
             }
         });
 
-//        map.setOnPolygonClickListener(new AMap.OnPolygonClickListener() {
-//            @Override
-//            public void onPolygonClick(Polygon polygon) {
-//                WritableMap event = makeClickEventData(polygon.getPoints().get(0));
-//                event.putString("action", "polygon-press");
-//                manager.pushEvent(polygonMap.get(polygon), "onPress", event);
-//            }
-//        });
-
         map.setOnPolylineClickListener(new AMap.OnPolylineClickListener() {
             @Override
             public void onPolylineClick(Polyline polyline) {
@@ -212,6 +203,14 @@ public class GaodeMapView extends MapView implements AMap.InfoWindowAdapter, AMa
         map.setOnMapClickListener(new AMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng point) {
+                for (Polygon polygon : polygonMap.keySet()) {
+                    if (polygon.contains(point)) {
+                        WritableMap event = makeClickEventData(polygon.getPoints().get(0));
+                        event.putString("action", "polygon-press");
+                        manager.pushEvent(polygonMap.get(polygon), "onPress", event);
+                        return;
+                    }
+                }
                 WritableMap event = makeClickEventData(point);
                 event.putString("action", "press");
                 manager.pushEvent(view, "onPress", event);
@@ -646,7 +645,9 @@ public class GaodeMapView extends MapView implements AMap.InfoWindowAdapter, AMa
                     LatLngBoundsUtils.BoundsAreDifferent(bounds, lastBoundsEmitted)) {
                 LatLng center = map.getCameraPosition().target;
                 lastBoundsEmitted = bounds;
-                eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, center, true));
+                if (bounds.northeast != null && bounds.southwest != null) {
+                    eventDispatcher.dispatchEvent(new RegionChangeEvent(getId(), bounds, center, true));
+                }
             }
 
             timerHandler.postDelayed(this, 100);
