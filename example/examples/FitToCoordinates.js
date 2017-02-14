@@ -62,6 +62,7 @@ class FitToCoordinates extends React.Component {
         <MapView
           ref={ref => { this.map = ref; }}
           style={styles.map}
+          provider={this.props.provider}
           initialRegion={{
             latitude: LATITUDE,
             longitude: LONGITUDE,
