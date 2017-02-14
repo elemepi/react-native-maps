@@ -10,7 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class GaodeMapCalloutManager extends ViewGroupManager<AirMapCallout> {
+public class GaodeMapCalloutManager extends ViewGroupManager<GaodeMapCallout> {
 
     @Override
     public String getName() {
@@ -18,12 +18,12 @@ public class GaodeMapCalloutManager extends ViewGroupManager<AirMapCallout> {
     }
 
     @Override
-    public AirMapCallout createViewInstance(ThemedReactContext context) {
-        return new AirMapCallout(context);
+    public GaodeMapCallout createViewInstance(ThemedReactContext context) {
+        return new GaodeMapCallout(context);
     }
 
     @ReactProp(name = "tooltip", defaultBoolean = false)
-    public void setTooltip(AirMapCallout view, boolean tooltip) {
+    public void setTooltip(GaodeMapCallout view, boolean tooltip) {
         view.setTooltip(tooltip);
     }
 
@@ -42,7 +42,7 @@ public class GaodeMapCalloutManager extends ViewGroupManager<AirMapCallout> {
     }
 
     @Override
-    public void updateExtraData(AirMapCallout view, Object extraData) {
+    public void updateExtraData(GaodeMapCallout view, Object extraData) {
         // This method is called from the shadow node with the width/height of the rendered
         // marker view.
         //noinspection unchecked
