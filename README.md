@@ -1,6 +1,14 @@
-# react-native-maps [![npm version](https://img.shields.io/npm/v/react-native-maps.svg?style=flat)](https://www.npmjs.com/package/react-native-maps)
+# react-native-maps
 
-React Native Map components for iOS + Android
+Forked from https://github.com/airbnb/react-native-maps, with support of gaode map.
+
+Some API are currently not supported:
+ 
+ * On load callback.
+ * Fit to coordinate with padding.
+ * Callout anchor.
+
+================ ORIGINAL README ================
 
 ## Installation
 
