@@ -3,6 +3,7 @@ package com.airbnb.android.react.maps;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.view.View;
@@ -329,6 +330,7 @@ public class GaodeMapMarker extends GaodeMapFeature {
 
     public void setCalloutView(GaodeMapCallout view) {
         this.calloutView = view;
+        this.title = "";
     }
 
     public GaodeMapCallout getCalloutView() {
@@ -338,11 +340,11 @@ public class GaodeMapMarker extends GaodeMapFeature {
     public View getCallout() {
         if (this.calloutView == null) return null;
 
-        if (this.wrappedCalloutView == null) {
-            this.wrapCalloutView();
-        }
-
         if (this.calloutView.getTooltip()) {
+            if (this.wrappedCalloutView == null) {
+                this.wrapCalloutView(true);
+            }
+
             return this.wrappedCalloutView;
         } else {
             return null;
@@ -352,18 +354,18 @@ public class GaodeMapMarker extends GaodeMapFeature {
     public View getInfoContents() {
         if (this.calloutView == null) return null;
 
-        if (this.wrappedCalloutView == null) {
-            this.wrapCalloutView();
-        }
-
         if (this.calloutView.getTooltip()) {
             return null;
         } else {
+            if (this.wrappedCalloutView == null) {
+                this.wrapCalloutView(false);
+            }
+
             return this.wrappedCalloutView;
         }
     }
 
-    private void wrapCalloutView() {
+    private void wrapCalloutView(boolean noBubble) {
         if (this.calloutView == null || this.calloutView.getChildCount() == 0) {
             return;
         }
@@ -375,6 +377,10 @@ public class GaodeMapMarker extends GaodeMapFeature {
                 this.calloutView.width,
                 this.calloutView.height
         ));
+        // To get rid of the bubble set by gaode
+        if (noBubble) {
+            LL.setBackgroundColor(Color.TRANSPARENT);
+        }
 
         this.wrappedCalloutView = LL;
     }
