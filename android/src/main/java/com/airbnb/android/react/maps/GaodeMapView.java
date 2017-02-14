@@ -49,7 +49,7 @@ import java.util.Map;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
-public class GaodeMapView extends MapView implements AMap.InfoWindowAdapter, AMap.OnMarkerDragListener {
+public class GaodeMapView extends MapView implements AMap.InfoWindowAdapter, AMap.OnMarkerDragListener, IAirMapView {
     private ProgressBar mapLoadingProgressBar;
     private RelativeLayout mapLoadingLayout;
     private ImageView cacheImageView;
@@ -781,5 +781,25 @@ public class GaodeMapView extends MapView implements AMap.InfoWindowAdapter, AMa
         LatLng coords = this.map.getProjection().fromScreenLocation(point);
         WritableMap event = makeClickEventData(coords);
         manager.pushEvent(this, "onPanDrag", event);
+    }
+
+    @Override
+    public boolean initialized() {
+        return map != null;
+    }
+
+    @Override
+    public void snapshot(final OnSnapshotReadyCallback callback) {
+        map.getMapScreenShot(new AMap.OnMapScreenShotListener() {
+            @Override
+            public void onMapScreenShot(Bitmap bitmap) {
+                callback.onSnapshotReady(bitmap);
+            }
+
+            @Override
+            public void onMapScreenShot(Bitmap bitmap, int i) {
+
+            }
+        });
     }
 }

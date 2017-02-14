@@ -51,7 +51,7 @@ import java.util.Map;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
-        GoogleMap.OnMarkerDragListener, OnMapReadyCallback {
+        GoogleMap.OnMarkerDragListener, OnMapReadyCallback, IAirMapView {
     public GoogleMap map;
     private ProgressBar mapLoadingProgressBar;
     private RelativeLayout mapLoadingLayout;
@@ -779,5 +779,20 @@ public class AirMapView extends MapView implements GoogleMap.InfoWindowAdapter,
         LatLng coords = this.map.getProjection().fromScreenLocation(point);
         WritableMap event = makeClickEventData(coords);
         manager.pushEvent(this, "onPanDrag", event);
+    }
+
+    @Override
+    public boolean initialized() {
+        return map != null;
+    }
+
+    @Override
+    public void snapshot(final OnSnapshotReadyCallback callback) {
+        map.snapshot(new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(Bitmap bitmap) {
+                callback.onSnapshotReady(bitmap);
+            }
+        });
     }
 }

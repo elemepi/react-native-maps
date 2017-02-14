@@ -74,16 +74,17 @@ public class AirMapModule extends ReactContextBaseJavaModule {
         UIManagerModule uiManager = context.getNativeModule(UIManagerModule.class);
         uiManager.addUIBlock(new UIBlock() {
             public void execute (NativeViewHierarchyManager nvhm) {
-                AirMapView view = (AirMapView) nvhm.resolveView(tag);
+                IAirMapView view = (IAirMapView) nvhm.resolveView(tag);
                 if (view == null) {
                     promise.reject("AirMapView not found");
                     return;
                 }
-                if (view.map == null) {
+                if (!view.initialized()) {
                     promise.reject("AirMapView.map is not valid");
                     return;
                 }
-                view.map.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                view.snapshot(new IAirMapView.OnSnapshotReadyCallback() {
+                    @Override
                     public void onSnapshotReady(@Nullable Bitmap snapshot) {
 
                         // Convert image to requested width/height if neccesary
