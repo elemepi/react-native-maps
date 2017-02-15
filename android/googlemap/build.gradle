@@ -24,6 +24,6 @@ android {
 dependencies {
     compile "com.google.android.gms:play-services-base:9.8.0"
     compile "com.google.android.gms:play-services-maps:9.8.0"
-    compile project(':common')
+    compile project(':react-native-maps:common')
     testCompile 'junit:junit:4.12'
 }
