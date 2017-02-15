@@ -573,7 +573,18 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         }
 
         LatLngBounds bounds = builder.build();
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, baseMapPadding);
+        CameraUpdate cu;
+        if (edgePadding != null) {
+            cu = CameraUpdateFactory.newLatLngBoundsRect(
+                    bounds,
+                    baseMapPadding + edgePadding.getInt("left"),
+                    baseMapPadding + edgePadding.getInt("right"),
+                    baseMapPadding + edgePadding.getInt("top"),
+                    baseMapPadding + edgePadding.getInt("bottom")
+            );
+        } else {
+            cu = CameraUpdateFactory.newLatLngBounds(bounds, baseMapPadding);
+        }
 
         if (animated) {
             startMonitoringRegion();

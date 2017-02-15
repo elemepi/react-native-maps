@@ -7,7 +7,6 @@ Since Google is unavailable in China, I created this fork to use AMap on Android
 Some API are currently not supported:
  
  * On load callback.
- * Fit to coordinate with padding.
  * Callout anchor.
 
 You should also add your apikey to AndroidManifest.xml:
