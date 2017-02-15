@@ -23,7 +23,6 @@ public class ExampleApplication extends Application implements ReactApplication 
       return Arrays.asList(
               new MainReactPackage(),
               new AirMapsPackage(),
-              new AirGoogleMapPackage(),
               new AirAMapPackage());
     }
   };

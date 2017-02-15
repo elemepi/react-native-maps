@@ -19,7 +19,7 @@ import AnimatedRegion from './AnimatedRegion';
 import {
   contextTypes as childContextTypes,
   getAirMapName,
-  googleMapIsInstalled,
+  isProviderInstalled,
   createNotSupportedComponent,
 } from './decorateMapComponent';
 import * as ProviderConstants from './ProviderConstants';
@@ -644,12 +644,14 @@ const nativeComponent = Component => requireNativeComponent(Component, MapView, 
 });
 const airMaps = {};
 if (Platform.OS === 'android') {
-  airMaps.default = googleMapIsInstalled ?
-    nativeComponent('AIRGoogleMap') : nativeComponent('AIRAMap');
-  airMaps.google = nativeComponent('AIRGoogleMap');
-  airMaps.amap = nativeComponent('AIRAMap');
+  airMaps.google = isProviderInstalled('google') ? nativeComponent('AIRGoogleMap') : null;
+  airMaps.amap = isProviderInstalled('amap') ? nativeComponent('AIRAMap') : null;
+  airMaps.default = airMaps.google || airMaps.amap ||
+    createNotSupportedComponent('react-native-maps: No provider found.');
+  airMaps.google = airMaps.google || createNotSupportedComponent('react-native-maps: react-native-maps:googlemap must be included in your Android project'); // eslint-disable-line max-len
+  airMaps.amap = airMaps.amap || createNotSupportedComponent('react-native-maps: react-native-maps:amap must be included in your Android project'); // eslint-disable-line max-len
 } else {
-  airMaps.google = googleMapIsInstalled ? nativeComponent('AIRGoogleMap') :
+  airMaps.google = isProviderInstalled('google') ? nativeComponent('AIRGoogleMap') :
     createNotSupportedComponent('react-native-maps: AirGoogleMaps dir must be added to your xCode project to support GoogleMaps on iOS.'); // eslint-disable-line max-len
 }
 const getAirMapComponent = provider => airMaps[provider || 'default'];
