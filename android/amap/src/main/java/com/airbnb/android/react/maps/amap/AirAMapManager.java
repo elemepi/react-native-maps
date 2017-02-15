@@ -3,6 +3,7 @@ package com.airbnb.android.react.maps.amap;
 import android.os.RemoteException;
 import android.view.View;
 
+import com.airbnb.android.react.maps.common.AirMapManager;
 import com.airbnb.android.react.maps.common.SizeReportingShadowNode;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
@@ -27,14 +28,9 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-public class AirAMapManager extends ViewGroupManager<AirAMapView> {
+public class AirAMapManager extends AirMapManager<AirAMapView> {
 
     private static final String REACT_CLASS = "AIRAMap";
-    private static final int ANIMATE_TO_REGION = 1;
-    private static final int ANIMATE_TO_COORDINATE = 2;
-    private static final int FIT_TO_ELEMENTS = 3;
-    private static final int FIT_TO_SUPPLIED_MARKERS = 4;
-    private static final int FIT_TO_COORDINATES = 5;
 
     private static final Map<String, Integer> MAP_TYPES = MapBuilder.of(
             "standard", AMap.MAP_TYPE_NORMAL,
@@ -188,93 +184,6 @@ public class AirAMapManager extends ViewGroupManager<AirAMapView> {
     @ReactProp(name = "pitchEnabled", defaultBoolean = false)
     public void setPitchEnabled(AirAMapView view, boolean pitchEnabled) {
         view.map.getUiSettings().setTiltGesturesEnabled(pitchEnabled);
-    }
-
-    @Override
-    public void receiveCommand(AirAMapView view, int commandId, @Nullable ReadableArray args) {
-        Integer duration;
-        Double lat;
-        Double lng;
-        Double lngDelta;
-        Double latDelta;
-        ReadableMap region;
-
-        switch (commandId) {
-            case ANIMATE_TO_REGION:
-                region = args.getMap(0);
-                duration = args.getInt(1);
-                lng = region.getDouble("longitude");
-                lat = region.getDouble("latitude");
-                lngDelta = region.getDouble("longitudeDelta");
-                latDelta = region.getDouble("latitudeDelta");
-                LatLngBounds bounds = new LatLngBounds(
-                        new LatLng(lat - latDelta / 2, lng - lngDelta / 2), // southwest
-                        new LatLng(lat + latDelta / 2, lng + lngDelta / 2)  // northeast
-                );
-                view.animateToRegion(bounds, duration);
-                break;
-
-            case ANIMATE_TO_COORDINATE:
-                region = args.getMap(0);
-                duration = args.getInt(1);
-                lng = region.getDouble("longitude");
-                lat = region.getDouble("latitude");
-                view.animateToCoordinate(new LatLng(lat, lng), duration);
-                break;
-
-            case FIT_TO_ELEMENTS:
-                view.fitToElements(args.getBoolean(0));
-                break;
-
-            case FIT_TO_SUPPLIED_MARKERS:
-                view.fitToSuppliedMarkers(args.getArray(0), args.getBoolean(1));
-                break;
-            case FIT_TO_COORDINATES:
-                view.fitToCoordinates(args.getArray(0), args.getMap(1), args.getBoolean(2));
-                break;
-        }
-    }
-
-    @Override
-    @Nullable
-    public Map getExportedCustomDirectEventTypeConstants() {
-        Map<String, Map<String, String>> map = MapBuilder.of(
-                "onMapReady", MapBuilder.of("registrationName", "onMapReady"),
-                "onPress", MapBuilder.of("registrationName", "onPress"),
-                "onLongPress", MapBuilder.of("registrationName", "onLongPress"),
-                "onMarkerPress", MapBuilder.of("registrationName", "onMarkerPress"),
-                "onMarkerSelect", MapBuilder.of("registrationName", "onMarkerSelect"),
-                "onMarkerDeselect", MapBuilder.of("registrationName", "onMarkerDeselect"),
-                "onCalloutPress", MapBuilder.of("registrationName", "onCalloutPress")
-        );
-
-        map.putAll(MapBuilder.of(
-                "onMarkerDragStart", MapBuilder.of("registrationName", "onMarkerDragStart"),
-                "onMarkerDrag", MapBuilder.of("registrationName", "onMarkerDrag"),
-                "onMarkerDragEnd", MapBuilder.of("registrationName", "onMarkerDragEnd"),
-                "onPanDrag", MapBuilder.of("registrationName", "onPanDrag")
-        ));
-
-        return map;
-    }
-
-    @Override
-    @Nullable
-    public Map<String, Integer> getCommandsMap() {
-        return MapBuilder.of(
-                "animateToRegion", ANIMATE_TO_REGION,
-                "animateToCoordinate", ANIMATE_TO_COORDINATE,
-                "fitToElements", FIT_TO_ELEMENTS,
-                "fitToSuppliedMarkers", FIT_TO_SUPPLIED_MARKERS,
-                "fitToCoordinates", FIT_TO_COORDINATES
-        );
-    }
-
-    @Override
-    public LayoutShadowNode createShadowNodeInstance() {
-        // A custom shadow node is needed in order to pass back the width/height of the map to the
-        // view manager so that it can start applying camera moves with bounds.
-        return new SizeReportingShadowNode();
     }
 
     @Override

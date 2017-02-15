@@ -10,6 +10,18 @@ import com.amap.api.maps.model.LatLngBounds;
  */
 
 public class AirAMapLatLngUtil {
+    public static LatLng convert(SimpleLatLng latLng) {
+        if (latLng == null) {
+            return null;
+        }
+        return new LatLng(latLng.latitude, latLng.longitude);
+    }
+    public static LatLngBounds convert(SimpleBounds bounds) {
+        if (bounds == null) {
+            return null;
+        }
+        return new LatLngBounds(convert(bounds.northeast), convert(bounds.southwest));
+    }
     public static SimpleLatLng convert(LatLng latLng) {
         if (latLng == null) {
             return null;

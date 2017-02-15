@@ -24,6 +24,8 @@ import android.widget.RelativeLayout;
 import com.airbnb.android.react.maps.common.IAirMapView;
 import com.airbnb.android.react.maps.common.LatLngBoundsUtils;
 import com.airbnb.android.react.maps.common.RegionChangeEvent;
+import com.airbnb.android.react.maps.common.SimpleBounds;
+import com.airbnb.android.react.maps.common.SimpleLatLng;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.AMapOptions;
 import com.amap.api.maps.CameraUpdate;
@@ -485,17 +487,17 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         }
     }
 
-    public void animateToRegion(LatLngBounds bounds, int duration) {
+    public void animateToRegion(SimpleBounds bounds, int duration) {
         if (map != null) {
             startMonitoringRegion();
-            map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 0), duration, null);
+            map.animateCamera(CameraUpdateFactory.newLatLngBounds(AirAMapLatLngUtil.convert(bounds), 0), duration, null);
         }
     }
 
-    public void animateToCoordinate(LatLng coordinate, int duration) {
+    public void animateToCoordinate(SimpleLatLng coordinate, int duration) {
         if (map != null) {
             startMonitoringRegion();
-            map.animateCamera(CameraUpdateFactory.newLatLng(coordinate), duration, null);
+            map.animateCamera(CameraUpdateFactory.newLatLng(AirAMapLatLngUtil.convert(coordinate)), duration, null);
         }
     }
 
