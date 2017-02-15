@@ -8,6 +8,8 @@ import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.LayoutShadowNode;
 import com.facebook.react.uimanager.ViewGroupManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -72,10 +74,32 @@ public abstract class AirMapManager<T extends ViewGroup & IAirMapView> extends V
                 break;
 
             case FIT_TO_SUPPLIED_MARKERS:
-                view.fitToSuppliedMarkers(args.getArray(0), args.getBoolean(1));
+                ReadableArray array = args.getArray(0);
+                List<String> markerIds = new ArrayList<>();
+                for (int i = 0; i < array.size(); i++) {
+                    markerIds.add(array.getString(i));
+                }
+                view.fitToSuppliedMarkers(markerIds, args.getBoolean(1));
                 break;
             case FIT_TO_COORDINATES:
-                view.fitToCoordinates(args.getArray(0), args.getMap(1), args.getBoolean(2));
+                ReadableArray coordsArray = args.getArray(0);
+                ReadableMap paddings = args.getMap(1);
+                List<SimpleLatLng> coords = new ArrayList<>();
+                for (int i = 0; i < coordsArray.size(); i++) {
+                    ReadableMap latLng = coordsArray.getMap(i);
+                    coords.add(new SimpleLatLng(latLng.getDouble("latitude"), latLng.getDouble("longitude")));
+                }
+
+                if (paddings == null) {
+                    view.fitToCoordinates(coords, 0, 0, 0, 0, args.getBoolean(2));
+                } else {
+                    int left = paddings.getInt("left");
+                    int top = paddings.getInt("top");
+                    int right = paddings.getInt("right");
+                    int bottom = paddings.getInt("bottom");
+
+                    view.fitToCoordinates(coords, left, top, right, bottom, args.getBoolean(2));
+                }
                 break;
         }
     }

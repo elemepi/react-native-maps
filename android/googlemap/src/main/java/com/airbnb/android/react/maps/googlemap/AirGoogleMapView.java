@@ -27,7 +27,6 @@ import com.airbnb.android.react.maps.common.RegionChangeEvent;
 import com.airbnb.android.react.maps.common.SimpleBounds;
 import com.airbnb.android.react.maps.common.SimpleLatLng;
 import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
@@ -49,7 +48,6 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.Polyline;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -529,23 +527,16 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
         }
     }
 
-    public void fitToSuppliedMarkers(ReadableArray markerIDsArray, boolean animated) {
+    public void fitToSuppliedMarkers(List<String> markerIDs, boolean animated) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        String[] markerIDs = new String[markerIDsArray.size()];
-        for (int i = 0; i < markerIDsArray.size(); i++) {
-            markerIDs[i] = markerIDsArray.getString(i);
-        }
-
         boolean addedPosition = false;
-
-        List<String> markerIDList = Arrays.asList(markerIDs);
 
         for (AirMapFeature feature : features) {
             if (feature instanceof AirGoogleMapMarker) {
                 String identifier = ((AirGoogleMapMarker)feature).getIdentifier();
                 Marker marker = (Marker)feature.getFeature();
-                if (markerIDList.contains(identifier)) {
+                if (markerIDs.contains(identifier)) {
                     builder.include(marker.getPosition());
                     addedPosition = true;
                 }
@@ -564,22 +555,17 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
         }
     }
 
-    public void fitToCoordinates(ReadableArray coordinatesArray, ReadableMap edgePadding, boolean animated) {
+    public void fitToCoordinates(List<SimpleLatLng> coordinatesArray, int left, int top, int right, int bottom, boolean animated) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        for (int i = 0; i < coordinatesArray.size(); i++) {
-            ReadableMap latLng = coordinatesArray.getMap(i);
-            Double lat = latLng.getDouble("latitude");
-            Double lng = latLng.getDouble("longitude");
-            builder.include(new LatLng(lat, lng));
+        for (SimpleLatLng latLng : coordinatesArray) {
+            builder.include(AirGoogleMapLatLngUtil.convert(latLng));
         }
 
         LatLngBounds bounds = builder.build();
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, baseMapPadding);
 
-        if (edgePadding != null) {
-            map.setPadding(edgePadding.getInt("left"), edgePadding.getInt("top"), edgePadding.getInt("right"), edgePadding.getInt("bottom"));
-        }
+        map.setPadding(left, top, right, bottom);
 
         if (animated) {
             startMonitoringRegion();

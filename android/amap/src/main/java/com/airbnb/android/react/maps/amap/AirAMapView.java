@@ -40,7 +40,6 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.Polygon;
 import com.amap.api.maps.model.Polyline;
 import com.facebook.react.bridge.LifecycleEventListener;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
@@ -49,7 +48,6 @@ import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -527,23 +525,16 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         }
     }
 
-    public void fitToSuppliedMarkers(ReadableArray markerIDsArray, boolean animated) {
+    public void fitToSuppliedMarkers(List<String> markerIDs, boolean animated) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        String[] markerIDs = new String[markerIDsArray.size()];
-        for (int i = 0; i < markerIDsArray.size(); i++) {
-            markerIDs[i] = markerIDsArray.getString(i);
-        }
-
         boolean addedPosition = false;
-
-        List<String> markerIDList = Arrays.asList(markerIDs);
 
         for (AirMapFeature feature : features) {
             if (feature instanceof AirAMapMarker) {
                 String identifier = ((AirAMapMarker)feature).getIdentifier();
                 Marker marker = (Marker)feature.getFeature();
-                if (markerIDList.contains(identifier)) {
+                if (markerIDs.contains(identifier)) {
                     builder.include(marker.getPosition());
                     addedPosition = true;
                 }
@@ -562,29 +553,21 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         }
     }
 
-    public void fitToCoordinates(ReadableArray coordinatesArray, ReadableMap edgePadding, boolean animated) {
+    public void fitToCoordinates(List<SimpleLatLng> coordinatesArray, int left, int top, int right, int bottom, boolean animated) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        for (int i = 0; i < coordinatesArray.size(); i++) {
-            ReadableMap latLng = coordinatesArray.getMap(i);
-            Double lat = latLng.getDouble("latitude");
-            Double lng = latLng.getDouble("longitude");
-            builder.include(new LatLng(lat, lng));
+        for (SimpleLatLng latLng : coordinatesArray) {
+            builder.include(AirAMapLatLngUtil.convert(latLng));
         }
 
         LatLngBounds bounds = builder.build();
-        CameraUpdate cu;
-        if (edgePadding != null) {
-            cu = CameraUpdateFactory.newLatLngBoundsRect(
-                    bounds,
-                    baseMapPadding + edgePadding.getInt("left"),
-                    baseMapPadding + edgePadding.getInt("right"),
-                    baseMapPadding + edgePadding.getInt("top"),
-                    baseMapPadding + edgePadding.getInt("bottom")
-            );
-        } else {
-            cu = CameraUpdateFactory.newLatLngBounds(bounds, baseMapPadding);
-        }
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBoundsRect(
+                bounds,
+                baseMapPadding + left,
+                baseMapPadding + right,
+                baseMapPadding + top,
+                baseMapPadding + bottom
+        );
 
         if (animated) {
             startMonitoringRegion();
