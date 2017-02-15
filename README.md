@@ -8,14 +8,61 @@ Some API are currently not supported:
  
  * On load callback.
  * Callout anchor.
+ 
+## Install
 
-You should also add your apikey to AndroidManifest.xml:
+package.json: 
+
+```json
+{
+  "dependencies": {
+    "react-native-maps": "github:jiaminglu/react-native-maps",
+  }
+}
+```
+    
+settings.gradle:
+
+```gradle
+include ':react-native-maps:common'
+project(':react-native-maps:common').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android/common')
+include ':react-native-maps:amap'
+project(':react-native-maps:amap').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android/amap')
+include ':react-native-maps:googlemap'
+project(':react-native-maps:googlemap').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android/googlemap')
+```
+    
+build.gradle:
+
+```gradle
+compile project(':react-native-maps:amap')
+compile project(':react-native-maps:googlemap')
+```
+    
+MainApplication.java:
+
+```java
+class MainApplication {
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+                //...
+                new AirMapsPackage(),
+                new AirGoogleMapPackage(),
+                new AirAMapPackage()
+        );
+    }
+}
+```
+
+AndroidManifest.xml:
    
-   ```
-   <meta-data
-     android:name="com.amap.api.v2.apikey"
-     android:value="..."/>
-   ```
+```
+<meta-data
+ android:name="com.amap.api.v2.apikey"
+ android:value="..."/>
+```
+
+Then use MapView with provider == 'amap'
 
 ================ ORIGINAL README ================
 
