@@ -2,6 +2,7 @@ package com.airbnb.android.react.maps.googlemap;
 
 import android.content.Context;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -10,7 +11,7 @@ import com.google.android.gms.maps.model.UrlTileProvider;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AirGoogleMapUrlTile extends AirGoogleMapFeature {
+public class AirGoogleMapUrlTile extends AirMapFeature<GoogleMap> {
 
     class AIRMapUrlTileProvider extends UrlTileProvider
     {

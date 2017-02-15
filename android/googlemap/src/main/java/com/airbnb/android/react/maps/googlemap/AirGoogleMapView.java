@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.airbnb.android.react.maps.common.IAirMapView;
 import com.airbnb.android.react.maps.common.LatLngBoundsUtils;
 import com.airbnb.android.react.maps.common.RegionChangeEvent;
@@ -77,7 +78,7 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
     private static final String[] PERMISSIONS = new String[] {
             "android.permission.ACCESS_FINE_LOCATION", "android.permission.ACCESS_COARSE_LOCATION"};
 
-    private final List<AirGoogleMapFeature> features = new ArrayList<>();
+    private final List<AirMapFeature> features = new ArrayList<>();
     private final Map<Marker, AirGoogleMapMarker> markerMap = new HashMap<>();
     private final Map<Polyline, AirGoogleMapPolyline> polylineMap = new HashMap<>();
     private final Map<Polygon, AirGoogleMapPolygon> polygonMap = new HashMap<>();
@@ -444,7 +445,7 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
     }
 
     public void removeFeatureAt(int index) {
-        AirGoogleMapFeature feature = features.remove(index);
+        AirMapFeature feature = features.remove(index);
         if (feature instanceof AirGoogleMapMarker) {
             markerMap.remove(feature.getFeature());
         }
@@ -508,7 +509,7 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
 
         boolean addedPosition = false;
 
-        for (AirGoogleMapFeature feature : features) {
+        for (AirMapFeature feature : features) {
             if (feature instanceof AirGoogleMapMarker) {
                 Marker marker = (Marker) feature.getFeature();
                 builder.include(marker.getPosition());
@@ -540,7 +541,7 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
 
         List<String> markerIDList = Arrays.asList(markerIDs);
 
-        for (AirGoogleMapFeature feature : features) {
+        for (AirMapFeature feature : features) {
             if (feature instanceof AirGoogleMapMarker) {
                 String identifier = ((AirGoogleMapMarker)feature).getIdentifier();
                 Marker marker = (Marker)feature.getFeature();

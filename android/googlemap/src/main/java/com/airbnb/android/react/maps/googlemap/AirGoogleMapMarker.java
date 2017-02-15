@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -34,7 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import javax.annotation.Nullable;
 
-public class AirGoogleMapMarker extends AirGoogleMapFeature {
+public class AirGoogleMapMarker extends AirMapFeature<GoogleMap> {
 
     private MarkerOptions markerOptions;
     private Marker marker;

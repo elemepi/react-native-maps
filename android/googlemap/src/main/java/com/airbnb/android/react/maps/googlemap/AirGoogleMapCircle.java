@@ -2,12 +2,13 @@ package com.airbnb.android.react.maps.googlemap;
 
 import android.content.Context;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 
-public class AirGoogleMapCircle extends AirGoogleMapFeature {
+public class AirGoogleMapCircle extends AirMapFeature<GoogleMap> {
 
     private CircleOptions circleOptions;
     private Circle circle;

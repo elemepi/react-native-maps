@@ -2,6 +2,7 @@ package com.airbnb.android.react.maps.amap;
 
 import android.content.Context;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Polygon;
@@ -12,7 +13,7 @@ import com.facebook.react.bridge.ReadableMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AirAMapPolygon extends AirAMapFeature {
+public class AirAMapPolygon extends AirMapFeature<AMap> {
 
     private PolygonOptions polygonOptions;
     private Polygon polygon;

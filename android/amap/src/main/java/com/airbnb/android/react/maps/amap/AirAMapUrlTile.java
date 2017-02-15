@@ -2,6 +2,7 @@ package com.airbnb.android.react.maps.amap;
 
 import android.content.Context;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.TileOverlay;
 import com.amap.api.maps.model.TileOverlayOptions;
@@ -10,7 +11,7 @@ import com.amap.api.maps.model.UrlTileProvider;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class AirAMapUrlTile extends AirAMapFeature {
+public class AirAMapUrlTile extends AirMapFeature<AMap> {
 
     class AIRMapUrlTileProvider extends UrlTileProvider
     {

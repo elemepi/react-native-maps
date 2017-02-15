@@ -12,11 +12,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class AirGoogleMapsPackage implements ReactPackage {
-    public AirGoogleMapsPackage(Activity activity) {
+public class AirGoogleMapPackage implements ReactPackage {
+    public AirGoogleMapPackage(Activity activity) {
     } // backwards compatability
 
-    public AirGoogleMapsPackage() {
+    public AirGoogleMapPackage() {
     }
 
     @Override

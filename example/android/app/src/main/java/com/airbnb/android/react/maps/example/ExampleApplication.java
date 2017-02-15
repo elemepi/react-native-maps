@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.amap.AirAMapPackage;
 import com.airbnb.android.react.maps.common.AirMapsPackage;
-import com.airbnb.android.react.maps.googlemap.AirGoogleMapsPackage;
+import com.airbnb.android.react.maps.googlemap.AirGoogleMapPackage;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -23,7 +23,7 @@ public class ExampleApplication extends Application implements ReactApplication 
       return Arrays.asList(
               new MainReactPackage(),
               new AirMapsPackage(),
-              new AirGoogleMapsPackage(),
+              new AirGoogleMapPackage(),
               new AirAMapPackage());
     }
   };

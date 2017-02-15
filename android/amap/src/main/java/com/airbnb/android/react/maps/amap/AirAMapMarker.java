@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -35,7 +36,7 @@ import com.facebook.react.bridge.ReadableMap;
 
 import javax.annotation.Nullable;
 
-public class AirAMapMarker extends AirAMapFeature {
+public class AirAMapMarker extends AirMapFeature<AMap> {
 
     private MarkerOptions markerOptions;
     private Marker marker;
