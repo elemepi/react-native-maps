@@ -6,7 +6,6 @@ import {
 import decorateMapComponent, {
   SUPPORTED,
   NOT_SUPPORTED,
-  USES_DEFAULT_IMPLEMENTATION,
 } from './decorateMapComponent';
 
 const propTypes = {
@@ -40,7 +39,7 @@ module.exports = decorateMapComponent(MapCallout, {
   providers: {
     google: {
       ios: SUPPORTED,
-      android: USES_DEFAULT_IMPLEMENTATION,
+      android: SUPPORTED,
     },
     amap: {
       ios: NOT_SUPPORTED,

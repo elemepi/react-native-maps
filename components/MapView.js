@@ -32,11 +32,6 @@ const MAP_TYPES = {
   NONE: 'none',
 };
 
-const GOOGLE_MAPS_ONLY_TYPES = [
-  MAP_TYPES.TERRAIN,
-  MAP_TYPES.NONE,
-];
-
 const viewConfig = {
   uiViewClassName: 'AIR<provider>Map',
   validAttributes: {
@@ -370,6 +365,16 @@ const propTypes = {
 
 };
 
+const defaultProps = {};
+
+if (Platform.OS === 'android') {
+  if (isProviderInstalled('google')) {
+    defaultProps.provider = 'google';
+  } else if (isProviderInstalled('amap')) {
+    defaultProps.provider = 'amap';
+  }
+}
+
 class MapView extends React.Component {
   constructor(props) {
     super(props);
@@ -521,9 +526,9 @@ class MapView extends React.Component {
       result: args.result || 'file',
     };
     if ((config.format !== 'png') &&
-        (config.format !== 'jpg')) throw new Error('Invalid format specified');
+      (config.format !== 'jpg')) throw new Error('Invalid format specified');
     if ((config.result !== 'file') &&
-        (config.result !== 'base64')) throw new Error('Invalid result specified');
+      (config.result !== 'base64')) throw new Error('Invalid result specified');
 
     // Call native function
     if (Platform.OS === 'android') {
@@ -593,10 +598,6 @@ class MapView extends React.Component {
         onMapReady: this._onMapReady,
         onLayout: this._onLayout,
       };
-      if (Platform.OS === 'ios' && props.provider === ProviderConstants.PROVIDER_DEFAULT
-        && GOOGLE_MAPS_ONLY_TYPES.includes(props.mapType)) {
-        props.mapType = MAP_TYPES.standard;
-      }
       props.handlePanDrag = !!props.onPanDrag;
     } else {
       props = {
@@ -630,6 +631,7 @@ class MapView extends React.Component {
 }
 
 MapView.propTypes = propTypes;
+MapView.defaultProps = defaultProps;
 MapView.viewConfig = viewConfig;
 MapView.childContextTypes = childContextTypes;
 
@@ -644,12 +646,10 @@ const nativeComponent = Component => requireNativeComponent(Component, MapView, 
 });
 const airMaps = {};
 if (Platform.OS === 'android') {
-  airMaps.google = isProviderInstalled('google') ? nativeComponent('AIRGoogleMap') : null;
-  airMaps.amap = isProviderInstalled('amap') ? nativeComponent('AIRAMap') : null;
-  airMaps.default = airMaps.google || airMaps.amap ||
-    createNotSupportedComponent('react-native-maps: No provider found.');
-  airMaps.google = airMaps.google || createNotSupportedComponent('react-native-maps: react-native-maps:googlemap must be included in your Android project'); // eslint-disable-line max-len
-  airMaps.amap = airMaps.amap || createNotSupportedComponent('react-native-maps: react-native-maps:amap must be included in your Android project'); // eslint-disable-line max-len
+  airMaps.google = isProviderInstalled('google') ? nativeComponent('AIRGoogleMap') :
+    createNotSupportedComponent('react-native-maps: react-native-maps:googlemap must be included in your Android project'); // eslint-disable-line max-len
+  airMaps.amap = isProviderInstalled('amap') ? nativeComponent('AIRAMap') :
+    createNotSupportedComponent('react-native-maps: react-native-maps:amap must be included in your Android project'); // eslint-disable-line max-len
 } else {
   airMaps.google = isProviderInstalled('google') ? nativeComponent('AIRGoogleMap') :
     createNotSupportedComponent('react-native-maps: AirGoogleMaps dir must be added to your xCode project to support GoogleMaps on iOS.'); // eslint-disable-line max-len
@@ -678,3 +678,4 @@ MapView.Animated = Animated.createAnimatedComponent(MapView);
 MapView.AnimatedRegion = AnimatedRegion;
 
 module.exports = MapView;
+

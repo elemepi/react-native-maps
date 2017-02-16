@@ -5,13 +5,11 @@ import {
   Platform,
 } from 'react-native';
 import {
-  PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
   PROVIDER_AMAP,
 } from './ProviderConstants';
 
 export const SUPPORTED = 'SUPPORTED';
-export const USES_DEFAULT_IMPLEMENTATION = 'USES_DEFAULT_IMPLEMENTATION';
 export const NOT_SUPPORTED = 'NOT_SUPPORTED';
 
 export function getAirMapName(provider) {
@@ -39,20 +37,12 @@ export const isProviderInstalled = provider => !!NativeModules.UIManager[getAirM
 export default function decorateMapComponent(Component, { componentType, providers }) {
   const components = {};
 
-  const getDefaultComponent = () =>
-    requireNativeComponent(getAirComponentName(null, componentType), Component);
-
   Component.contextTypes = contextTypes; // eslint-disable-line no-param-reassign
 
   // eslint-disable-next-line no-param-reassign
   Component.prototype.getAirComponent = function getAirComponent() {
-    const provider = this.context.provider || PROVIDER_DEFAULT;
+    const provider = this.context.provider;
     if (components[provider]) return components[provider];
-
-    if (provider === PROVIDER_DEFAULT) {
-      components[PROVIDER_DEFAULT] = getDefaultComponent();
-      return components[PROVIDER_DEFAULT];
-    }
 
     const providerInfo = providers[provider];
     const platformSupport = providerInfo[Platform.OS];
@@ -60,12 +50,11 @@ export default function decorateMapComponent(Component, { componentType, provide
     if (platformSupport === NOT_SUPPORTED) {
       components[provider] = createNotSupportedComponent(`react-native-maps: ${componentName} is not supported on ${Platform.OS}`); // eslint-disable-line max-len
     } else if (platformSupport === SUPPORTED) {
-      if (provider !== PROVIDER_GOOGLE || (Platform.OS === 'ios' && googleMapIsInstalled)) {
+      if (isProviderInstalled(provider)) {
         components[provider] = requireNativeComponent(componentName, Component);
+      } else {
+        components[provider] = createNotSupportedComponent(`react-native-maps: ${componentName} is not supported on ${Platform.OS}`); // eslint-disable-line max-len
       }
-    } else { // (platformSupport === USES_DEFAULT_IMPLEMENTATION)
-      if (!components[PROVIDER_DEFAULT]) components[PROVIDER_DEFAULT] = getDefaultComponent();
-      components[provider] = components[PROVIDER_DEFAULT];
     }
 
     return components[provider];

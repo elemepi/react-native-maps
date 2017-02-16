@@ -3,7 +3,6 @@ import {
   View,
 } from 'react-native';
 import decorateMapComponent, {
-  USES_DEFAULT_IMPLEMENTATION,
   SUPPORTED,
   NOT_SUPPORTED,
 } from './decorateMapComponent';
@@ -151,7 +150,7 @@ module.exports = decorateMapComponent(MapPolyline, {
   providers: {
     google: {
       ios: SUPPORTED,
-      android: USES_DEFAULT_IMPLEMENTATION,
+      android: SUPPORTED,
     },
     amap: {
       ios: NOT_SUPPORTED,

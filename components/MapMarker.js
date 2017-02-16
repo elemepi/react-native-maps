@@ -12,7 +12,6 @@ import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 import decorateMapComponent, {
   SUPPORTED,
   NOT_SUPPORTED,
-  USES_DEFAULT_IMPLEMENTATION,
 } from './decorateMapComponent';
 
 const viewConfig = {
@@ -291,7 +290,7 @@ module.exports = decorateMapComponent(MapMarker, {
   providers: {
     google: {
       ios: SUPPORTED,
-      android: USES_DEFAULT_IMPLEMENTATION,
+      android: SUPPORTED,
     },
     amap: {
       ios: NOT_SUPPORTED,
