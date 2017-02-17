@@ -83,16 +83,16 @@ public abstract class AirMapManager<T extends ViewGroup & IAirMapView> extends V
                 break;
             case FIT_TO_COORDINATES:
                 ReadableArray coordsArray = args.getArray(0);
-                ReadableMap paddings = args.getMap(1);
                 List<SimpleLatLng> coords = new ArrayList<>();
                 for (int i = 0; i < coordsArray.size(); i++) {
                     ReadableMap latLng = coordsArray.getMap(i);
                     coords.add(new SimpleLatLng(latLng.getDouble("latitude"), latLng.getDouble("longitude")));
                 }
 
-                if (paddings == null) {
+                if (args.isNull(1)) {
                     view.fitToCoordinates(coords, 0, 0, 0, 0, args.getBoolean(2));
                 } else {
+                    ReadableMap paddings = args.getMap(1);
                     int left = paddings.getInt("left");
                     int top = paddings.getInt("top");
                     int right = paddings.getInt("right");
