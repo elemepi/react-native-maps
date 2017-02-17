@@ -47,6 +47,7 @@ const propTypes = {
    * MapKit in iOS or GoogleMaps in android as the map provider.
    */
   provider: PropTypes.oneOf([
+    'default',
     'google',
     'amap',
   ]),
@@ -373,6 +374,8 @@ if (Platform.OS === 'android') {
   } else if (isProviderInstalled('amap')) {
     defaultProps.provider = 'amap';
   }
+} else {
+  defaultProps.provider = 'default';
 }
 
 class MapView extends React.Component {
@@ -651,6 +654,7 @@ if (Platform.OS === 'android') {
   airMaps.amap = isProviderInstalled('amap') ? nativeComponent('AIRAMap') :
     createNotSupportedComponent('react-native-maps: react-native-maps:amap must be included in your Android project'); // eslint-disable-line max-len
 } else {
+  airMaps.default = nativeComponent('AIRMap');
   airMaps.google = isProviderInstalled('google') ? nativeComponent('AIRGoogleMap') :
     createNotSupportedComponent('react-native-maps: AirGoogleMaps dir must be added to your xCode project to support GoogleMaps on iOS.'); // eslint-disable-line max-len
 }

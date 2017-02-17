@@ -44,8 +44,7 @@ export default function decorateMapComponent(Component, { componentType, provide
     const provider = this.context.provider;
     if (components[provider]) return components[provider];
 
-    const providerInfo = providers[provider];
-    const platformSupport = providerInfo[Platform.OS];
+    const platformSupport = provider === 'default' ? SUPPORTED : providers[provider][Platform.OS];
     const componentName = getAirComponentName(provider, componentType);
     if (platformSupport === NOT_SUPPORTED) {
       components[provider] = createNotSupportedComponent(`react-native-maps: ${componentName} is not supported on ${Platform.OS}`); // eslint-disable-line max-len
