@@ -38,13 +38,22 @@ public abstract class AirMapManager<T extends ViewGroup & IAirMapView> extends V
     }
 
     @Override
-    public void receiveCommand(T view, int commandId, @Nullable ReadableArray args) {
+    public void receiveCommand(final T view, final int commandId, @Nullable final ReadableArray args) {
         Integer duration;
         Double lat;
         Double lng;
         Double lngDelta;
         Double latDelta;
         ReadableMap region;
+
+        if (!view.initialized()) {
+            view.post(new Runnable() {
+                @Override
+                public void run() {
+                    receiveCommand(view, commandId, args);
+                }
+            });
+        }
 
         switch (commandId) {
             case ANIMATE_TO_REGION:

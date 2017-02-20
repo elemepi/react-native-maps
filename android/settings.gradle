@@ -1,1 +1,6 @@
-include ':amap', ':googlemap', ':common'
+include ':react-native-maps:common'
+project(':react-native-maps:common').projectDir = new File(rootProject.projectDir, './common')
+include ':react-native-maps:googlemap'
+project(':react-native-maps:googlemap').projectDir = new File(rootProject.projectDir, './googlemap')
+include ':react-native-maps:amap'
+project(':react-native-maps:amap').projectDir = new File(rootProject.projectDir, './amap')
