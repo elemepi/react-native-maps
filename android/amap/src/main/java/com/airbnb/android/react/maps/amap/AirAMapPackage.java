@@ -34,6 +34,7 @@ public class AirAMapPackage implements ReactPackage {
         AirAMapCalloutManager gaodeCalloutManager = new AirAMapCalloutManager();
         AirAMapMarkerManager gaodeAnnotationManager = new AirAMapMarkerManager();
         AirAMapPolylineManager gaodePolylineManager = new AirAMapPolylineManager(reactContext);
+        AirAMapRouteManager gaodeRouteManager = new AirAMapRouteManager(reactContext);
         AirAMapPolygonManager gaodePolygonManager = new AirAMapPolygonManager(reactContext);
         AirAMapCircleManager gaodeCircleManager = new AirAMapCircleManager(reactContext);
         AirAMapManager gaodeMapManager = new AirAMapManager(reactContext);
@@ -43,6 +44,7 @@ public class AirAMapPackage implements ReactPackage {
                 gaodeCalloutManager,
                 gaodeAnnotationManager,
                 gaodePolylineManager,
+                gaodeRouteManager,
                 gaodePolygonManager,
                 gaodeCircleManager,
                 gaodeMapManager,

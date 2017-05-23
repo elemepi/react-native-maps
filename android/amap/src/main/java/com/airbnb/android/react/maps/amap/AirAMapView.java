@@ -404,6 +404,12 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
             features.add(index, annotation);
             Marker marker = (Marker) annotation.getFeature();
             markerMap.put(marker, annotation);
+        } else if (child instanceof AirAMapRoute) {
+            AirAMapRoute polylineView = (AirAMapRoute) child;
+            polylineView.addToMap(map);
+            features.add(index, polylineView);
+            Polyline polyline = (Polyline) polylineView.getFeature();
+            polylineMap.put(polyline, polylineView);
         } else if (child instanceof AirAMapPolyline) {
             AirAMapPolyline polylineView = (AirAMapPolyline) child;
             polylineView.addToMap(map);

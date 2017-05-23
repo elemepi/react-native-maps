@@ -20,6 +20,7 @@ import AnimatedViews from './examples/AnimatedViews';
 import AnimatedMarkers from './examples/AnimatedMarkers';
 import Callouts from './examples/Callouts';
 import Overlays from './examples/Overlays';
+import Routes from './examples/Routes';
 import DefaultMarkers from './examples/DefaultMarkers';
 import CustomMarkers from './examples/CustomMarkers';
 import CachedMap from './examples/CachedMap';
@@ -151,6 +152,7 @@ class App extends React.Component {
       [AnimatedMarkers, 'Animated Marker Position'],
       [Callouts, 'Custom Callouts', true],
       [Overlays, 'Circles, Polygons, and Polylines', true],
+      [Routes, 'Routes', true],
       [DefaultMarkers, 'Default Markers', true],
       [CustomMarkers, 'Custom Markers', true],
       [TakeSnapshot, 'Take Snapshot', true, '(incomplete)'],
