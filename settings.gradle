@@ -1,0 +1,13 @@
+rootProject.name = 'react-native-maps'
+
+include ':example-android'
+project(":example-android").projectDir = file("./example/android/app")
+
+include ':react-native-maps:common'
+project(':react-native-maps:common').projectDir = new File(rootProject.projectDir, './lib/android/common')
+
+include ':react-native-maps:amap'
+project(':react-native-maps:amap').projectDir = new File(rootProject.projectDir, './lib/android/amap')
+
+include ':react-native-maps:googlemap'
+project(':react-native-maps:googlemap').projectDir = new File(rootProject.projectDir, './lib/android/googlemap')
