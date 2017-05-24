@@ -28,6 +28,8 @@ import com.airbnb.android.react.maps.common.RegionChangeEvent;
 import com.airbnb.android.react.maps.common.SimpleBounds;
 import com.airbnb.android.react.maps.common.SimpleLatLng;
 import com.facebook.react.bridge.LifecycleEventListener;
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.WritableNativeMap;
@@ -104,10 +106,12 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
     // https://github.com/airbnb/react-native-maps/issues/1147
     //
     // Doing this allows us to avoid both bugs.
-    private static Context getNonBuggyContext(ThemedReactContext reactContext) {
+    private static Context getNonBuggyContext(ThemedReactContext reactContext,
+                                              ReactApplicationContext appContext) {
         Context superContext = reactContext;
-
-        if (contextHasBug(superContext)) {
+        if (!contextHasBug(appContext.getCurrentActivity())) {
+            superContext = appContext.getCurrentActivity();
+        } else if (contextHasBug(superContext)) {
             // we have the bug! let's try to find a better context to use
             if (!contextHasBug(reactContext.getCurrentActivity())) {
                 superContext = reactContext.getCurrentActivity();
@@ -120,9 +124,9 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
         return superContext;
     }
 
-    public AirGoogleMapView(ThemedReactContext reactContext, AirGoogleMapManager manager,
-            GoogleMapOptions googleMapOptions) {
-        super(getNonBuggyContext(reactContext), googleMapOptions);
+    public AirGoogleMapView(ThemedReactContext reactContext, ReactApplicationContext appContext, AirGoogleMapManager manager,
+                      GoogleMapOptions googleMapOptions) {
+        super(getNonBuggyContext(reactContext, appContext), googleMapOptions);
 
         this.manager = manager;
         this.context = reactContext;

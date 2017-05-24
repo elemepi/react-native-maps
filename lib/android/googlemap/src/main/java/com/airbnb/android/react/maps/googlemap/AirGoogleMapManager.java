@@ -53,7 +53,7 @@ public class AirGoogleMapManager extends AirMapManager<AirGoogleMapView> {
             emitMapError(context, "Map initialize error", "map_init_error");
         }
 
-        return new AirGoogleMapView(context, this, this.googleMapOptions);
+        return new AirGoogleMapView(context, this.appContext, this, this.googleMapOptions);
     }
 
     @ReactProp(name = "region")
