@@ -11,7 +11,6 @@
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTConvert+CoreLocation.h>
-#import <React/RCTConvert+MapKit.h>
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTViewManager.h>
 #import <React/RCTConvert.h>
@@ -24,6 +23,7 @@
 #import "AIRMapCircle.h"
 #import "SMCalloutView.h"
 #import "AIRGoogleMapMarker.h"
+#import "RCTConvert+MapKit.h"
 
 #import <MapKit/MapKit.h>
 
@@ -56,6 +56,7 @@ RCT_EXPORT_VIEW_PROPERTY(rotateEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(scrollEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(pitchEnabled, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(showsUserLocation, BOOL)
+RCT_EXPORT_VIEW_PROPERTY(showsMyLocationButton, BOOL)
 RCT_EXPORT_VIEW_PROPERTY(customMapStyleString, NSString)
 RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
 RCT_EXPORT_VIEW_PROPERTY(onLongPress, RCTBubblingEventBlock)
