@@ -143,6 +143,9 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
     }
 
     public void onMapReady(final AMap map) {
+        if (destroyed) {
+            return;
+        }
         this.map = map;
         this.map.setInfoWindowAdapter(this);
         this.map.setOnMarkerDragListener(this);
@@ -297,12 +300,18 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
     }
 
     public synchronized void doDestroy() {
+        if (destroyed) {
+            return;
+        }
+        destroyed = true;
+
         if (lifecycleListener != null && context != null) {
             context.removeLifecycleEventListener(lifecycleListener);
             lifecycleListener = null;
         }
         if(!paused) {
             onPause();
+            paused = true;
         }
         if (!destroyed) {
             onDestroy();

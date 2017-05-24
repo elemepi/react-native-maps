@@ -145,6 +145,9 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
 
     @Override
     public void onMapReady(final GoogleMap map) {
+        if (destroyed) {
+            return;
+        }
         this.map = map;
         this.map.setInfoWindowAdapter(this);
         this.map.setOnMarkerDragListener(this);
@@ -305,18 +308,20 @@ public class AirGoogleMapView extends MapView implements GoogleMap.InfoWindowAda
     onDestroy is final method so I can't override it.
      */
     public synchronized  void doDestroy() {
+        if (destroyed) {
+            return;
+        }
+        destroyed = true;
+
         if (lifecycleListener != null && context != null) {
             context.removeLifecycleEventListener(lifecycleListener);
             lifecycleListener = null;
         }
-        if(!paused) {
+        if (!paused) {
             onPause();
+            paused = true;
         }
-        if (!destroyed) {
-            onDestroy();
-            destroyed = true;
-        }
-
+        onDestroy();
     }
 
     public void setRegion(ReadableMap region) {
