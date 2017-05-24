@@ -80,7 +80,12 @@ public class AirAMapManager extends AirMapManager<AirAMapView> {
             view.map.setMapType(typeId);
         }
     }
-    
+
+    @ReactProp(name = "showsIndoorLevelPicker", defaultBoolean = false)
+    public void setShowsIndoorLevelPicker(AirAMapView view, boolean showsIndoorLevelPicker) {
+        view.map.getUiSettings().setIndoorSwitchEnabled(showsIndoorLevelPicker);
+    }
+
     @ReactProp(name = "customMapStyleString")
     public void setMapStyle(AirAMapView view, @Nullable String customMapStyleString) {
         view.map.setCustomMapStylePath(customMapStyleString);

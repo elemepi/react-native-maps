@@ -84,6 +84,11 @@ public class AirGoogleMapManager extends AirMapManager<AirGoogleMapView> {
         view.setShowsMyLocationButton(showMyLocationButton);
     }
 
+    @ReactProp(name = "showsIndoorLevelPicker", defaultBoolean = false)
+    public void setShowsIndoorLevelPicker(AirGoogleMapView view, boolean showsIndoorLevelPicker) {
+        view.map.getUiSettings().setIndoorLevelPickerEnabled(showsIndoorLevelPicker);
+    }
+
     @ReactProp(name = "toolbarEnabled", defaultBoolean = true)
     public void setToolbarEnabled(AirGoogleMapView view, boolean toolbarEnabled) {
         view.setToolbarEnabled(toolbarEnabled);
