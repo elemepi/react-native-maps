@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import {
   View,
+  Image,
 } from 'react-native';
 import decorateMapComponent, {
   SUPPORTED,
@@ -25,6 +26,11 @@ const propTypes = {
    * Callback that is called when the user presses on the polyline
    */
   onPress: PropTypes.func,
+
+  /*
+   * Texture image
+   */
+  texture: Image.propTypes.source,
 
   /**
    * The fill color to use for the path.
@@ -131,13 +137,20 @@ const defaultProps = {
 
 class MapPolyline extends React.Component {
   setNativeProps(props) {
-    this.polyline.setNativeProps(props);
+    this.polyline.setNativeProps(this.convertProps(props));
+  }
+
+  convertProps(props) {
+    return {
+      ...props,
+      texture: Image.resolveAssetSource(props.texture),
+    };
   }
 
   render() {
     const AIRMapPolyline = this.getAirComponent();
     return (
-      <AIRMapPolyline {...this.props} ref={ref => { this.polyline = ref; }} />
+      <AIRMapPolyline {...this.convertProps(this.props)} ref={ref => { this.polyline = ref; }} />
     );
   }
 }

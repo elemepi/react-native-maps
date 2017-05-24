@@ -1,12 +1,25 @@
 package com.airbnb.android.react.maps.amap;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import com.airbnb.android.react.maps.common.AirMapFeature;
 import com.amap.api.maps.AMap;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Polyline;
 import com.amap.api.maps.model.PolylineOptions;
+import com.facebook.common.executors.CallerThreadExecutor;
+import com.facebook.common.references.CloseableReference;
+import com.facebook.datasource.DataSource;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipeline;
+import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
+import com.facebook.imagepipeline.image.CloseableImage;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 
@@ -23,6 +36,9 @@ public class AirAMapPolyline extends AirMapFeature<AMap> {
     private float width;
     private boolean geodesic;
     private float zIndex;
+
+    protected String texture;
+    protected Bitmap textureBitmap;
 
     public AirAMapPolyline(Context context) {
         super(context);
@@ -77,12 +93,55 @@ public class AirAMapPolyline extends AirMapFeature<AMap> {
 
     private PolylineOptions createPolylineOptions() {
         PolylineOptions options = new PolylineOptions();
-        options.addAll(coordinates);
+        if (coordinates != null) {
+            options.addAll(coordinates);
+        }
+        if (this.textureBitmap != null) {
+            options.setCustomTexture(BitmapDescriptorFactory.fromBitmap(this.textureBitmap));
+        }
         options.color(color);
         options.width(width);
         options.geodesic(geodesic);
         options.zIndex(zIndex);
         return options;
+    }
+
+    public void setTexture(ReadableMap map) {
+        String newTexture = map.getString("uri");
+        if (this.texture != null && this.textureBitmap != null && this.texture.equals(newTexture)) {
+            return;
+        }
+        texture = newTexture;
+        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(texture)).build();
+
+        ImagePipeline imagePipeline = Fresco.getImagePipeline();
+        final DataSource<CloseableReference<CloseableImage>>
+                dataSource = imagePipeline.fetchDecodedImage(imageRequest, this);
+
+        dataSource.subscribe(new BaseBitmapDataSubscriber() {
+
+            @Override
+            public void onNewResultImpl(@Nullable Bitmap bitmap) {
+                if (dataSource.isFinished() && bitmap != null){
+                    setTextureBitmap(bitmap);
+                    dataSource.close();
+                }
+            }
+
+            @Override
+            public void onFailureImpl(DataSource dataSource) {
+                if (dataSource != null) {
+                    dataSource.close();
+                }
+            }
+        }, CallerThreadExecutor.getInstance());
+    }
+
+    private void setTextureBitmap(Bitmap bitmap) {
+        this.textureBitmap = bitmap;
+        if (polyline != null) {
+            polyline.setCustomTexture(BitmapDescriptorFactory.fromBitmap(bitmap));
+        }
     }
 
     @Override

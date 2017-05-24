@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
@@ -40,6 +41,11 @@ public class AirAMapPolylineManager extends ViewGroupManager<AirAMapPolyline> {
     @Override
     public AirAMapPolyline createViewInstance(ThemedReactContext context) {
         return new AirAMapPolyline(context);
+    }
+
+    @ReactProp(name = "texture")
+    public void setTexture(AirAMapRoute view, ReadableMap texture) {
+        view.setTexture(texture);
     }
 
     @ReactProp(name = "coordinates")
