@@ -140,7 +140,7 @@ public class AirAMapRoute extends AirAMapPolyline {
     }
 
     private void sync() {
-        if (startPoint == null || endPoint == null) {
+        if (startPoint == null || endPoint == null || mode == null) {
             return;
         }
         switch (this.mode) {

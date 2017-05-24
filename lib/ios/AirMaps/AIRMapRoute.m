@@ -38,6 +38,9 @@
 }
 
 - (void) requestRoute {
+    if (!(_mode && _startPoint && _endPoint)) {
+        return;
+    }
     MKDirectionsRequest *routeReq = [[MKDirectionsRequest alloc] init];
     if ([_mode  isEqual: @"walking"]) {
         routeReq.transportType = MKDirectionsTransportTypeWalking;
