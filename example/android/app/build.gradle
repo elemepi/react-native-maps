@@ -113,6 +113,7 @@ android {
 }
 
 dependencies {
+    compile "com.facebook.react:react-native:+"
     compile project(':react-native-maps:amap')
     compile project(':react-native-maps:googlemap')
 }

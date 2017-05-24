@@ -22,6 +22,6 @@ android {
 }
 
 dependencies {
-    compile "com.facebook.react:react-native:+"
+    provided "com.facebook.react:react-native:+"
     testCompile 'junit:junit:4.12'
 }
