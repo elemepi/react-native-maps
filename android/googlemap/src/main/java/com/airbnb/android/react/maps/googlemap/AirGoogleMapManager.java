@@ -209,8 +209,8 @@ public class AirGoogleMapManager extends AirMapManager<AirGoogleMapView> {
         view.updateExtraData(extraData);
     }
 
-    void pushEvent(View view, String name, WritableMap data) {
-        reactContext.getJSModule(RCTEventEmitter.class)
+    void pushEvent(ThemedReactContext context, View view, String name, WritableMap data) {
+        context.getJSModule(RCTEventEmitter.class)
                 .receiveEvent(view.getId(), name, data);
     }
 
