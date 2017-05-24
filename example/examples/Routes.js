@@ -54,8 +54,9 @@ class Overlays extends React.Component {
             startPoint={startPoint}
             endPoint={endPoint}
             mode={mode}
+            texture={require('../custtexture.png')}
             strokeColor="rgba(0,0,200,0.5)"
-            strokeWidth={3}
+            strokeWidth={16}
             lineDashPattern={[5, 2, 3, 2]}
           />
         </MapView>
@@ -84,7 +85,9 @@ class Overlays extends React.Component {
   }
 
   changeMode(mode) {
-    this.setState({mode});
+    this.setState({
+      mode,
+    });
   }
 }
 

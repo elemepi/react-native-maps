@@ -43,6 +43,11 @@ public class AirAMapRouteManager extends ViewGroupManager<AirAMapRoute> {
         return new AirAMapRoute(context);
     }
 
+    @ReactProp(name = "texture")
+    public void setTexture(AirAMapRoute view, ReadableMap texture) {
+        view.setTexture(texture);
+    }
+
     @ReactProp(name = "mode")
     public void setMode(AirAMapRoute view, String mode) {
         view.setMode(mode);

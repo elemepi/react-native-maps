@@ -1,13 +1,8 @@
 package com.airbnb.android.react.maps.amap;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.airbnb.android.react.maps.common.AirMapFeature;
-import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Polyline;
-import com.amap.api.maps.model.PolylineOptions;
 import com.amap.api.services.busline.BusLineItem;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
@@ -32,8 +27,6 @@ import java.util.List;
 public class AirAMapRoute extends AirAMapPolyline {
 
     private RouteSearch routeSearch;
-    private PolylineOptions polylineOptions;
-    private Polyline polyline;
 
     public static final String MODE_DRIVING = "driving";
     public static final String MODE_WALKING = "walking";
@@ -42,11 +35,6 @@ public class AirAMapRoute extends AirAMapPolyline {
     private String mode;
     private LatLng startPoint;
     private LatLng endPoint;
-    private ArrayList<LatLng> coordinates;
-    private int color;
-    private float width;
-    private boolean geodesic;
-    private float zIndex;
 
     public AirAMapRoute(Context context) {
         super(context);
@@ -89,7 +77,6 @@ public class AirAMapRoute extends AirAMapPolyline {
                             }
                         }
                         coordinates.add(endPoint);
-                        Log.d("Map", "onDriveRouteSearched");
                         polyline.setPoints(coordinates);
                     }
                 }
@@ -110,7 +97,6 @@ public class AirAMapRoute extends AirAMapPolyline {
                             }
                         }
                         coordinates.add(endPoint);
-                        Log.d("Map", "onWalkRouteSearched");
                         polyline.setPoints(coordinates);
                     }
                 }
@@ -131,7 +117,6 @@ public class AirAMapRoute extends AirAMapPolyline {
                             }
                         }
                         coordinates.add(endPoint);
-                        Log.d("Map", "onRideRouteSearched");
                         polyline.setPoints(coordinates);
                     }
                 }
@@ -180,66 +165,5 @@ public class AirAMapRoute extends AirAMapPolyline {
         }
     }
 
-    public void setColor(int color) {
-        this.color = color;
-        if (polyline != null) {
-            polyline.setColor(color);
-        }
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-        if (polyline != null) {
-            polyline.setWidth(width);
-        }
-    }
-
-    public void setZIndex(float zIndex) {
-        this.zIndex = zIndex;
-        if (polyline != null) {
-            polyline.setZIndex(zIndex);
-        }
-    }
-
-    public void setGeodesic(boolean geodesic) {
-        this.geodesic = geodesic;
-        if (polyline != null) {
-            polyline.setGeodesic(geodesic);
-        }
-    }
-
-    public PolylineOptions getPolylineOptions() {
-        if (polylineOptions == null) {
-            polylineOptions = createPolylineOptions();
-        }
-        return polylineOptions;
-    }
-
-    private PolylineOptions createPolylineOptions() {
-        PolylineOptions options = new PolylineOptions();
-        if (coordinates != null) {
-            options.addAll(coordinates);
-        }
-        options.color(color);
-        options.width(width);
-        options.geodesic(geodesic);
-        options.zIndex(zIndex);
-        return options;
-    }
-
-    @Override
-    public Object getFeature() {
-        return polyline;
-    }
-
-    @Override
-    public void addToMap(AMap map) {
-        polyline = map.addPolyline(getPolylineOptions());
-    }
-
-    @Override
-    public void removeFromMap(AMap map) {
-        polyline.remove();
-    }
 }
 

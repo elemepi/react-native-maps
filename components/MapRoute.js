@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import {
   View,
+  Image,
 } from 'react-native';
 import decorateMapComponent, {
   SUPPORTED,
@@ -30,6 +31,11 @@ const propTypes = {
    * Mode: driving/walking/riding
    */
   mode: PropTypes.string,
+
+  /*
+   * Texture image
+   */
+  texture: Image.propTypes.source,
 
   /**
    * Callback that is called when the user presses on the polyline
@@ -142,13 +148,21 @@ const defaultProps = {
 
 class MapRoute extends React.Component {
   setNativeProps(props) {
-    this.polyline.setNativeProps(props);
+    this.polyline.setNativeProps(this.convertProps(props));
+  }
+
+  convertProps(props) {
+    return {
+      ...props,
+      texture: Image.resolveAssetSource(props.texture),
+    };
   }
 
   render() {
     const AIRMapRoute = this.getAirComponent();
+
     return (
-      <AIRMapRoute {...this.props} ref={ref => { this.polyline = ref; }} />
+      <AIRMapRoute {...this.convertProps(this.props)} ref={ref => { this.polyline = ref; }} />
     );
   }
 }

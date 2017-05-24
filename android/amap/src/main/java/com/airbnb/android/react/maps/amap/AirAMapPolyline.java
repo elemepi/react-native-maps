@@ -28,14 +28,15 @@ import java.util.List;
 
 public class AirAMapPolyline extends AirMapFeature<AMap> {
 
-    private PolylineOptions polylineOptions;
-    private Polyline polyline;
+    protected PolylineOptions polylineOptions;
+    protected Polyline polyline;
 
-    private List<LatLng> coordinates;
-    private int color;
-    private float width;
-    private boolean geodesic;
-    private float zIndex;
+    protected List<LatLng> coordinates;
+    protected int color;
+    protected float width;
+    protected boolean geodesic;
+
+    protected float zIndex;
 
     protected String texture;
     protected Bitmap textureBitmap;
