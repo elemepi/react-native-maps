@@ -39,6 +39,7 @@ import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.Polygon;
 import com.amap.api.maps.model.Polyline;
+import com.amap.api.maps.model.VisibleRegion;
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
@@ -80,7 +81,9 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
     private final ScaleGestureDetector scaleDetector;
     private final GestureDetectorCompat gestureDetector;
     private final AirAMapManager manager;
+    LifecycleEventListener lifecycleListener;
     private boolean paused = false;
+    private boolean destroyed = false;
     private final ThemedReactContext context;
     private final EventDispatcher eventDispatcher;
 
@@ -259,7 +262,7 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         // updating location constantly, killing the battery, even though some other location-mgmt
         // module may
         // desire to shut-down location-services.
-        LifecycleEventListener lifecycleListener = new LifecycleEventListener() {
+        lifecycleListener = new LifecycleEventListener() {
             @Override
             public void onHostResume() {
                 if (hasPermissions()) {
@@ -278,15 +281,34 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
                     //noinspection MissingPermission
                     map.setMyLocationEnabled(false);
                 }
-                paused = true;
+                synchronized (AirAMapView.this) {
+                    AirAMapView.this.onPause();
+                    paused = true;
+                }
             }
 
             @Override
             public void onHostDestroy() {
+                AirAMapView.this.doDestroy();
             }
         };
 
         context.addLifecycleEventListener(lifecycleListener);
+    }
+
+    public synchronized void doDestroy() {
+        if (lifecycleListener != null && context != null) {
+            context.removeLifecycleEventListener(lifecycleListener);
+            lifecycleListener = null;
+        }
+        if(!paused) {
+            onPause();
+        }
+        if (!destroyed) {
+            onDestroy();
+            destroyed = true;
+        }
+
     }
 
     private boolean hasPermissions() {
@@ -645,9 +667,12 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         @Override
         public void run() {
 
-            LatLngBounds bounds = map.getProjection().getVisibleRegion().latLngBounds;
-            if (lastBoundsEmitted == null ||
-                    LatLngBoundsUtils.BoundsAreDifferent(AirAMapLatLngUtil.convert(bounds), AirAMapLatLngUtil.convert(lastBoundsEmitted))) {
+            Projection projection = map.getProjection();
+            VisibleRegion region = (projection != null) ? projection.getVisibleRegion() : null;
+            LatLngBounds bounds = (region != null) ? region.latLngBounds : null;
+
+            if ((bounds != null) &&
+                    (lastBoundsEmitted == null || LatLngBoundsUtils.BoundsAreDifferent(AirAMapLatLngUtil.convert(bounds), AirAMapLatLngUtil.convert(lastBoundsEmitted)))) {
                 LatLng center = map.getCameraPosition().target;
                 lastBoundsEmitted = bounds;
                 if (bounds.northeast != null && bounds.southwest != null) {
