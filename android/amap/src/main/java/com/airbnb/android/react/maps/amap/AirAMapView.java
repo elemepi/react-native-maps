@@ -144,7 +144,7 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         this.map.setInfoWindowAdapter(this);
         this.map.setOnMarkerDragListener(this);
 
-        manager.pushEvent(this, "onMapReady", new WritableNativeMap());
+        manager.pushEvent(context, this, "onMapReady", new WritableNativeMap());
 
         final AirAMapView view = this;
 
@@ -157,12 +157,12 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
                 event = makeClickEventData(marker.getPosition());
                 event.putString("action", "marker-press");
                 event.putString("id", airMapMarker.getIdentifier());
-                manager.pushEvent(view, "onMarkerPress", event);
+                manager.pushEvent(context, view, "onMarkerPress", event);
 
                 event = makeClickEventData(marker.getPosition());
                 event.putString("action", "marker-press");
                 event.putString("id", airMapMarker.getIdentifier());
-                manager.pushEvent(markerMap.get(marker), "onPress", event);
+                manager.pushEvent(context, markerMap.get(marker), "onPress", event);
 
                 if (view.moveOnMarkerPress) {
                   return false;
@@ -178,7 +178,7 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
             public void onPolylineClick(Polyline polyline) {
                 WritableMap event = makeClickEventData(polyline.getPoints().get(0));
                 event.putString("action", "polyline-press");
-                manager.pushEvent(polylineMap.get(polyline), "onPress", event);
+                manager.pushEvent(context, polylineMap.get(polyline), "onPress", event);
             }
         });
 
@@ -189,17 +189,17 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
 
                 event = makeClickEventData(marker.getPosition());
                 event.putString("action", "callout-press");
-                manager.pushEvent(view, "onCalloutPress", event);
+                manager.pushEvent(context, view, "onCalloutPress", event);
 
                 event = makeClickEventData(marker.getPosition());
                 event.putString("action", "callout-press");
                 AirAMapMarker markerView = markerMap.get(marker);
-                manager.pushEvent(markerView, "onCalloutPress", event);
+                manager.pushEvent(context, markerView, "onCalloutPress", event);
 
                 event = makeClickEventData(marker.getPosition());
                 event.putString("action", "callout-press");
                 AirAMapCallout infoWindow = markerView.getCalloutView();
-                if (infoWindow != null) manager.pushEvent(infoWindow, "onPress", event);
+                if (infoWindow != null) manager.pushEvent(context, infoWindow, "onPress", event);
             }
         });
 
@@ -210,13 +210,13 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
                     if (polygon.contains(point)) {
                         WritableMap event = makeClickEventData(polygon.getPoints().get(0));
                         event.putString("action", "polygon-press");
-                        manager.pushEvent(polygonMap.get(polygon), "onPress", event);
+                        manager.pushEvent(context, polygonMap.get(polygon), "onPress", event);
                         return;
                     }
                 }
                 WritableMap event = makeClickEventData(point);
                 event.putString("action", "press");
-                manager.pushEvent(view, "onPress", event);
+                manager.pushEvent(context, view, "onPress", event);
             }
         });
 
@@ -225,7 +225,7 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
             public void onMapLongClick(LatLng point) {
                 WritableMap event = makeClickEventData(point);
                 event.putString("action", "long-press");
-                manager.pushEvent(view, "onLongPress", makeClickEventData(point));
+                manager.pushEvent(context, view, "onLongPress", makeClickEventData(point));
             }
         });
 
@@ -662,31 +662,31 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
     @Override
     public void onMarkerDragStart(Marker marker) {
         WritableMap event = makeClickEventData(marker.getPosition());
-        manager.pushEvent(this, "onMarkerDragStart", event);
+        manager.pushEvent(context, this, "onMarkerDragStart", event);
 
         AirAMapMarker markerView = markerMap.get(marker);
         event = makeClickEventData(marker.getPosition());
-        manager.pushEvent(markerView, "onDragStart", event);
+        manager.pushEvent(context, markerView, "onDragStart", event);
     }
 
     @Override
     public void onMarkerDrag(Marker marker) {
         WritableMap event = makeClickEventData(marker.getPosition());
-        manager.pushEvent(this, "onMarkerDrag", event);
+        manager.pushEvent(context, this, "onMarkerDrag", event);
 
         AirAMapMarker markerView = markerMap.get(marker);
         event = makeClickEventData(marker.getPosition());
-        manager.pushEvent(markerView, "onDrag", event);
+        manager.pushEvent(context, markerView, "onDrag", event);
     }
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
         WritableMap event = makeClickEventData(marker.getPosition());
-        manager.pushEvent(this, "onMarkerDragEnd", event);
+        manager.pushEvent(context, this, "onMarkerDragEnd", event);
 
         AirAMapMarker markerView = markerMap.get(marker);
         event = makeClickEventData(marker.getPosition());
-        manager.pushEvent(markerView, "onDragEnd", event);
+        manager.pushEvent(context, markerView, "onDragEnd", event);
     }
 
     private ProgressBar getMapLoadingProgressBar() {
@@ -785,7 +785,7 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         Point point = new Point((int) ev.getX(), (int) ev.getY());
         LatLng coords = this.map.getProjection().fromScreenLocation(point);
         WritableMap event = makeClickEventData(coords);
-        manager.pushEvent(this, "onPanDrag", event);
+        manager.pushEvent(context, this, "onPanDrag", event);
     }
 
     @Override

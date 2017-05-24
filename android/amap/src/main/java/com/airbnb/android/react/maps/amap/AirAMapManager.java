@@ -39,8 +39,6 @@ public class AirAMapManager extends AirMapManager<AirAMapView> {
             "navigation", AMap.MAP_TYPE_NAVI
     );
 
-    private ReactContext reactContext;
-
     private final ReactApplicationContext appContext;
 
     protected AMapOptions mapOptions;
@@ -57,29 +55,17 @@ public class AirAMapManager extends AirMapManager<AirAMapView> {
 
     @Override
     protected AirAMapView createViewInstance(ThemedReactContext context) {
-        reactContext = context;
-
         try {
             MapsInitializer.initialize(this.appContext);
         } catch (RuntimeException e) {
             e.printStackTrace();
-            emitMapError("Map initialize error", "map_init_error");
+            emitMapError(context, "Map initialize error", "map_init_error");
         } catch (RemoteException e) {
             e.printStackTrace();
-            emitMapError("Map initialize error", "map_init_error");
+            emitMapError(context, "Map initialize error", "map_init_error");
         }
 
         return new AirAMapView(context, this.appContext.getCurrentActivity(), this, this.mapOptions);
-    }
-
-    private void emitMapError(String message, String type) {
-        WritableMap error = Arguments.createMap();
-        error.putString("message", message);
-        error.putString("type", type);
-
-        reactContext
-                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                .emit("onError", error);
     }
 
     @ReactProp(name = "region")
@@ -209,11 +195,6 @@ public class AirAMapManager extends AirMapManager<AirAMapView> {
     @Override
     public void updateExtraData(AirAMapView view, Object extraData) {
         view.updateExtraData(extraData);
-    }
-
-    void pushEvent(View view, String name, WritableMap data) {
-        reactContext.getJSModule(RCTEventEmitter.class)
-                .receiveEvent(view.getId(), name, data);
     }
 
 }

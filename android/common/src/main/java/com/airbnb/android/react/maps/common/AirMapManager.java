@@ -1,12 +1,18 @@
 package com.airbnb.android.react.maps.common;
 
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.uimanager.LayoutShadowNode;
+import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.ViewGroupManager;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,6 +147,21 @@ public abstract class AirMapManager<T extends ViewGroup & IAirMapView> extends V
         // A custom shadow node is needed in order to pass back the width/height of the map to the
         // view manager so that it can start applying camera moves with bounds.
         return new SizeReportingShadowNode();
+    }
+
+    public void pushEvent(ThemedReactContext context, View view, String name, WritableMap data) {
+        context.getJSModule(RCTEventEmitter.class)
+                .receiveEvent(view.getId(), name, data);
+    }
+
+    protected void emitMapError(ThemedReactContext context, String message, String type) {
+        WritableMap error = Arguments.createMap();
+        error.putString("message", message);
+        error.putString("type", type);
+
+        context
+                .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("onError", error);
     }
 
 }
