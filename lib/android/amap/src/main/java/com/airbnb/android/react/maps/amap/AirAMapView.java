@@ -87,8 +87,37 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
     private final ThemedReactContext context;
     private final EventDispatcher eventDispatcher;
 
-    public AirAMapView(ThemedReactContext reactContext, Context appContext, AirAMapManager manager, AMapOptions options) {
-        super(appContext, options);
+    private static boolean contextHasBug(Context context) {
+        return context == null ||
+                context.getResources() == null ||
+                context.getResources().getConfiguration() == null;
+    }
+
+    // We do this to fix this bug:
+    // https://github.com/airbnb/react-native-maps/issues/271
+    //
+    // which conflicts with another bug regarding the passed in context:
+    // https://github.com/airbnb/react-native-maps/issues/1147
+    //
+    // Doing this allows us to avoid both bugs.
+    private static Context getNonBuggyContext(ThemedReactContext reactContext) {
+        Context superContext = reactContext;
+
+        if (contextHasBug(superContext)) {
+            // we have the bug! let's try to find a better context to use
+            if (!contextHasBug(reactContext.getCurrentActivity())) {
+                superContext = reactContext.getCurrentActivity();
+            } else if (!contextHasBug(reactContext.getApplicationContext())) {
+                superContext = reactContext.getApplicationContext();
+            } else {
+                // ¯\_(ツ)_/¯
+            }
+        }
+        return superContext;
+    }
+
+    public AirAMapView(ThemedReactContext reactContext, AirAMapManager manager, AMapOptions options) {
+        super(getNonBuggyContext(reactContext), options);
 
         this.manager = manager;
         this.context = reactContext;

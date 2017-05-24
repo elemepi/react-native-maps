@@ -65,7 +65,7 @@ public class AirAMapManager extends AirMapManager<AirAMapView> {
             emitMapError(context, "Map initialize error", "map_init_error");
         }
 
-        return new AirAMapView(context, this.appContext.getCurrentActivity(), this, this.mapOptions);
+        return new AirAMapView(context, this, this.mapOptions);
     }
 
     @ReactProp(name = "region")
