@@ -38,7 +38,7 @@
 }
 
 - (void) requestRoute {
-    if (!(_mode && _startPoint && _endPoint)) {
+    if (!(_mode && _startPoint.latitude && _startPoint.longitude && _endPoint.latitude && _endPoint.longitude)) {
         return;
     }
     MKDirectionsRequest *routeReq = [[MKDirectionsRequest alloc] init];
