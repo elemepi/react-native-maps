@@ -50,6 +50,14 @@ class Overlays extends React.Component {
           style={styles.map}
           initialRegion={region}
         >
+          <MapView.Marker
+            title="Start"
+            coordinate={startPoint}
+          />
+          <MapView.Marker
+            title="End"
+            coordinate={endPoint}
+          />
           <MapView.Route
             startPoint={startPoint}
             endPoint={endPoint}
