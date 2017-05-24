@@ -65,7 +65,6 @@ class Overlays extends React.Component {
             texture={require('../custtexture.png')}
             strokeColor="rgba(0,0,200,0.5)"
             strokeWidth={16}
-            lineDashPattern={[5, 2, 3, 2]}
           />
         </MapView>
         <View style={styles.buttonContainer}>

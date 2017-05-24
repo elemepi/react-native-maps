@@ -39,5 +39,6 @@
 @property(nonatomic, readonly) MKMapRect boundingMapRect;
 - (BOOL)intersectsMapRect:(MKMapRect)mapRect;
 - (BOOL)canReplaceMapContent;
+- (void)update;
 
 @end
