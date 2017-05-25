@@ -26,6 +26,10 @@
     [self requestRoute];
 }
 
+- (void)setOnRouteLoaded:(RCTDirectEventBlock)onRouteLoaded {
+    _onRouteLoaded = onRouteLoaded;
+}
+
 - (void) update {
     [super update];
 }
@@ -60,6 +64,15 @@
             self.polyline = route.polyline;
             self.renderer = [[MKPolylineRenderer alloc] initWithPolyline:self.polyline];
             [self update];
+            NSMutableArray *steps = [NSMutableArray arrayWithCapacity:route.steps.count];
+            [route.steps enumerateObjectsUsingBlock:^(MKRouteStep *step, NSUInteger idx, BOOL *stop) {
+                [steps addObject:@{@"distance": [[NSNumber alloc] initWithDouble:step.distance],
+                                   @"instruction": step.instructions ? step.instructions : [NSNull null],
+                                   @"notice": step.notice ? step.notice : [NSNull null]}];
+            }];
+            _onRouteLoaded(@{@"distance": [[NSNumber alloc] initWithDouble:route.distance],
+                             @"duration": [[NSNumber alloc] initWithDouble:route.expectedTravelTime],
+                             @"steps": steps});
         }
     }];
 }

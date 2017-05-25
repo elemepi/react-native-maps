@@ -19,13 +19,21 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.amap.api.services.route.WalkStep;
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.bridge.WritableNativeArray;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.uimanager.ThemedReactContext;
+import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AirAMapRoute extends AirAMapPolyline {
 
+    private ThemedReactContext context;
     private RouteSearch routeSearch;
 
     public static final String MODE_DRIVING = "driving";
@@ -36,8 +44,9 @@ public class AirAMapRoute extends AirAMapPolyline {
     private LatLng startPoint;
     private LatLng endPoint;
 
-    public AirAMapRoute(Context context) {
+    public AirAMapRoute(ThemedReactContext context) {
         super(context);
+        this.context = context;
         routeSearch = new RouteSearch(getContext());
         routeSearch.setRouteSearchListener(new RouteSearch.OnRouteSearchListener() {
             @Override
@@ -58,6 +67,14 @@ public class AirAMapRoute extends AirAMapPolyline {
                         }
                         coordinates.add(endPoint);
                         polyline.setPoints(coordinates);
+                        WritableMap data = new WritableNativeMap();
+                        data.putDouble("distance", ridePath.getDistance());
+                        data.putDouble("duration", ridePath.getDuration());
+                        data.putDouble("busDistance", ridePath.getBusDistance());
+                        data.putDouble("walkDistance", ridePath.getWalkDistance());
+                        data.putDouble("cost", ridePath.getCost());
+                        // TODO: steps not included
+                        callCallback(data);
                     }
                 }
             }
@@ -67,17 +84,40 @@ public class AirAMapRoute extends AirAMapPolyline {
                 if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
                     if (result != null && result.getPaths() != null && result.getPaths().size() > 0) {
                         final DrivePath ridePath = result.getPaths().get(0);
+                        WritableArray steps = new WritableNativeArray();
+
                         coordinates = new ArrayList<>();
                         List<DriveStep> ridePaths = ridePath.getSteps();
                         coordinates.add(startPoint);
                         for (int i = 0; i < ridePaths.size(); i++) {
                             DriveStep rideStep = ridePaths.get(i);
+                            WritableMap step = new WritableNativeMap();
+                            step.putDouble("distance", rideStep.getDistance());
+                            step.putDouble("duration", rideStep.getDuration());
+                            step.putString("action", rideStep.getAction());
+                            step.putString("assistantAction", rideStep.getAssistantAction());
+                            step.putString("instruction", rideStep.getInstruction());
+                            step.putString("orientation", rideStep.getOrientation());
+                            step.putString("road", rideStep.getRoad());
+                            step.putString("tollRoad", rideStep.getTollRoad());
+                            step.putDouble("tollDistance", rideStep.getTollDistance());
+                            step.putDouble("tolls", rideStep.getTolls());
+                            steps.pushMap(step);
+
                             for (LatLonPoint point : rideStep.getPolyline()) {
                                 coordinates.add(new LatLng(point.getLatitude(), point.getLongitude()));
                             }
                         }
                         coordinates.add(endPoint);
                         polyline.setPoints(coordinates);
+                        WritableMap data = new WritableNativeMap();
+                        data.putDouble("distance", ridePath.getDistance());
+                        data.putDouble("duration", ridePath.getDuration());
+                        data.putDouble("tolls", ridePath.getTolls());
+                        data.putDouble("tollDistance", ridePath.getTollDistance());
+                        data.putDouble("totalTrafficLights", ridePath.getTotalTrafficlights());
+                        data.putArray("steps", steps);
+                        callCallback(data);
                     }
                 }
             }
@@ -87,17 +127,35 @@ public class AirAMapRoute extends AirAMapPolyline {
                 if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
                     if (result != null && result.getPaths() != null && result.getPaths().size() > 0) {
                         final WalkPath ridePath = result.getPaths().get(0);
+                        WritableArray steps = new WritableNativeArray();
+
                         coordinates = new ArrayList<>();
                         List<WalkStep> ridePaths = ridePath.getSteps();
                         coordinates.add(startPoint);
                         for (int i = 0; i < ridePaths.size(); i++) {
                             WalkStep rideStep = ridePaths.get(i);
+                            WritableMap step = new WritableNativeMap();
+                            step.putDouble("distance", rideStep.getDistance());
+                            step.putDouble("duration", rideStep.getDuration());
+                            step.putString("action", rideStep.getAction());
+                            step.putString("assistantAction", rideStep.getAssistantAction());
+                            step.putString("instruction", rideStep.getInstruction());
+                            step.putString("orientation", rideStep.getOrientation());
+                            step.putString("road", rideStep.getRoad());
+                            steps.pushMap(step);
+
                             for (LatLonPoint point : rideStep.getPolyline()) {
                                 coordinates.add(new LatLng(point.getLatitude(), point.getLongitude()));
                             }
                         }
                         coordinates.add(endPoint);
                         polyline.setPoints(coordinates);
+
+                        WritableMap data = new WritableNativeMap();
+                        data.putDouble("distance", ridePath.getDistance());
+                        data.putDouble("duration", ridePath.getDuration());
+                        data.putArray("steps", steps);
+                        callCallback(data);
                     }
                 }
             }
@@ -107,17 +165,35 @@ public class AirAMapRoute extends AirAMapPolyline {
                 if (errorCode == AMapException.CODE_AMAP_SUCCESS) {
                     if (result != null && result.getPaths() != null && result.getPaths().size() > 0) {
                         final RidePath ridePath = result.getPaths().get(0);
+                        WritableArray steps = new WritableNativeArray();
+
                         coordinates = new ArrayList<>();
                         List<RideStep> ridePaths = ridePath.getSteps();
                         coordinates.add(startPoint);
                         for (int i = 0; i < ridePaths.size(); i++) {
                             RideStep rideStep = ridePaths.get(i);
+                            WritableMap step = new WritableNativeMap();
+                            step.putDouble("distance", rideStep.getDistance());
+                            step.putDouble("duration", rideStep.getDuration());
+                            step.putString("action", rideStep.getAction());
+                            step.putString("assistantAction", rideStep.getAssistantAction());
+                            step.putString("instruction", rideStep.getInstruction());
+                            step.putString("orientation", rideStep.getOrientation());
+                            step.putString("road", rideStep.getRoad());
+
+                            steps.pushMap(step);
                             for (LatLonPoint point : rideStep.getPolyline()) {
                                 coordinates.add(new LatLng(point.getLatitude(), point.getLongitude()));
                             }
                         }
                         coordinates.add(endPoint);
                         polyline.setPoints(coordinates);
+
+                        WritableMap data = new WritableNativeMap();
+                        data.putDouble("distance", ridePath.getDistance());
+                        data.putDouble("duration", ridePath.getDuration());
+                        data.putArray("steps", steps);
+                        callCallback(data);
                     }
                 }
             }
@@ -137,6 +213,10 @@ public class AirAMapRoute extends AirAMapPolyline {
     public void setMode(String mode) {
         this.mode = mode;
         sync();
+    }
+
+    private void callCallback(WritableMap map) {
+        context.getJSModule(RCTEventEmitter.class).receiveEvent(getId(), "onRouteLoaded", map);
     }
 
     private void sync() {

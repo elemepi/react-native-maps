@@ -65,6 +65,7 @@ class Overlays extends React.Component {
             texture={require('../custtexture.png')}
             strokeColor="rgba(0,0,200,0.5)"
             strokeWidth={16}
+            onRouteLoaded={console.log}
           />
         </MapView>
         <View style={styles.buttonContainer}>

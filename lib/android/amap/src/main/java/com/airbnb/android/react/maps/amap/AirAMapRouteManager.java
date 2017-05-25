@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -88,7 +87,8 @@ public class AirAMapRouteManager extends ViewGroupManager<AirAMapRoute> {
     @Nullable
     public Map getExportedCustomDirectEventTypeConstants() {
         return MapBuilder.of(
-            "onPress", MapBuilder.of("registrationName", "onPress")
+            "onPress", MapBuilder.of("registrationName", "onPress"),
+            "onRouteLoaded", MapBuilder.of("registrationName", "onRouteLoaded")
         );
     }
 }

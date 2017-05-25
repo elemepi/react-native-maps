@@ -21,5 +21,6 @@
 @property (nonatomic, copy) NSString *mode;
 @property (nonatomic, assign) CLLocationCoordinate2D startPoint;
 @property (nonatomic, assign) CLLocationCoordinate2D endPoint;
+@property (nonatomic, strong) RCTDirectEventBlock onRouteLoaded;
 
 @end
