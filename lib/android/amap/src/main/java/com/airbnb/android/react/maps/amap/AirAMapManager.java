@@ -132,6 +132,11 @@ public class AirAMapManager extends AirMapManager<AirAMapView> {
         view.map.getUiSettings().setCompassEnabled(showsCompass);
     }
 
+    @ReactProp(name = "logoPosition")
+    public void setLogoPosition(AirAMapView view, String position) {
+        view.setLogoPosition(position);
+    }
+
     @ReactProp(name = "scrollEnabled", defaultBoolean = false)
     public void setScrollEnabled(AirAMapView view, boolean scrollEnabled) {
         view.map.getUiSettings().setScrollGesturesEnabled(scrollEnabled);

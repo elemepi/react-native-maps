@@ -396,6 +396,21 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
     }
 
     public void setToolbarEnabled(boolean toolbarEnabled) {
+        map.getUiSettings().setZoomControlsEnabled(toolbarEnabled);
+    }
+
+    public void setLogoPosition(String position) {
+        switch (position) {
+            case "left":
+                map.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_LEFT);
+                break;
+            case "center":
+                map.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_CENTER);
+                break;
+            case "right":
+                map.getUiSettings().setLogoPosition(AMapOptions.LOGO_POSITION_BOTTOM_RIGHT);
+                break;
+        }
     }
 
     public void setCacheEnabled(boolean cacheEnabled) {
