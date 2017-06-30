@@ -26,6 +26,7 @@ dependencies {
     compile project(':react-native-maps:common')
     testCompile 'junit:junit:4.12'
     provided "com.facebook.react:react-native:+"
-    compile 'com.amap.api:map3d:latest.integration'
+    compile 'com.amap.api:map3d:5.0.0'
+    compile 'com.amap.api:map3d-native:5.0.0'
     compile 'com.amap.api:search:latest.integration'
 }
