@@ -23,7 +23,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':react-native-maps:common')
+    compile project(':react-native-maps')
     testCompile 'junit:junit:4.12'
     provided "com.facebook.react:react-native:+"
     compile 'com.amap.api:map3d:5.0.0'
