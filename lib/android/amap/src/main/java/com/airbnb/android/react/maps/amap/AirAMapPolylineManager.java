@@ -44,7 +44,7 @@ public class AirAMapPolylineManager extends ViewGroupManager<AirAMapPolyline> {
     }
 
     @ReactProp(name = "texture")
-    public void setTexture(AirAMapRoute view, ReadableMap texture) {
+    public void setTexture(AirAMapPolyline view, ReadableMap texture) {
         view.setTexture(texture);
     }
 
