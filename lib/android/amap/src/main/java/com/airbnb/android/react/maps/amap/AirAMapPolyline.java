@@ -108,6 +108,9 @@ public class AirAMapPolyline extends AirMapFeature<AMap> {
     }
 
     public void setTexture(ReadableMap map) {
+        if (map == null) {
+            return;
+        }
         String newTexture = map.getString("uri");
         if (this.texture != null && this.textureBitmap != null && this.texture.equals(newTexture)) {
             return;
