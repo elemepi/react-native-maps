@@ -35,7 +35,7 @@
 }
 
 - (MKMapItem*) mapItem:(NSString*) name withLocation:(CLLocationCoordinate2D)point {
-    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:point];
+    MKPlacemark *placemark = [[MKPlacemark alloc] initWithCoordinate:point addressDictionary:nil];
     MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
     [mapItem setName:name];
     return mapItem;
