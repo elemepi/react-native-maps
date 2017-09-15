@@ -59,7 +59,7 @@
     [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * response, NSError *err) {
         if (err) {
             NSLog(@"requestRoute Error %@", err);
-        } else {
+        } else if (response.routes.count) {
             MKRoute *route = response.routes[0];
             self.polyline = route.polyline;
             self.renderer = [[MKPolylineRenderer alloc] initWithPolyline:self.polyline];
