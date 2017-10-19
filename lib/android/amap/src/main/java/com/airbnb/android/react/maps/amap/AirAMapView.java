@@ -385,6 +385,11 @@ public class AirAMapView extends MapView implements AMap.InfoWindowAdapter, AMap
         this.showUserLocation = showUserLocation; // hold onto this for lifecycle handling
         if (hasPermissions()) {
             //noinspection MissingPermission
+            //
+            MyLocationStyle myLocationStyle;
+            myLocationStyle = new MyLocationStyle();
+            myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE_NO_CENTER);
+            map.setMyLocationStyle(myLocationStyle);
             map.setMyLocationEnabled(showUserLocation);
         }
     }
